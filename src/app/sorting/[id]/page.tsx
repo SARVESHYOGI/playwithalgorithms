@@ -1,29 +1,30 @@
 "use client";
 
 import { sortingAlgorithms } from "@/lib/data";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import BubbleSortVisualizer from "@/components/algorithms/sorting/BubbleSortVisualizer";
+import SelectionSortVisualizer from "@/components/algorithms/sorting/SelectionSortVisualizer";
+import InsertionSortVisualizer from "@/components/algorithms/InsertionSortVisualizer";
 
 export default function SortingAlgorithmPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = use(params);
   const [algorithm, setAlgorithm] = useState<
     { id: string; name: string; description: string } | undefined
   >(undefined);
-  const [size, setSize] = useState<number>(0);
+  const [size, setSize] = useState<number>(10);
   const [elements, setElements] = useState<number[]>([]);
   const [visualize, setVisualize] = useState(false);
 
   useEffect(() => {
-    const foundAlgorithm = sortingAlgorithms.find(
-      (alg) => alg.id === params.id
-    );
+    const foundAlgorithm = sortingAlgorithms.find((alg) => alg.id === id);
     setAlgorithm(foundAlgorithm);
-  }, [params.id]);
+  }, [id]);
 
   const Randomize = () => {
     setVisualize(false);
@@ -100,7 +101,20 @@ export default function SortingAlgorithmPage({
       </div>
 
       <div className="mt-10 w-full">
-        {visualize && <BubbleSortVisualizer array={elements} />}
+        {visualize && id === "bubble-sort" && (
+          <BubbleSortVisualizer array={elements} />
+        )}
+        {visualize && id === "selection-sort" && (
+          <SelectionSortVisualizer array={elements} />
+        )}
+        {visualize && id === "insertion-sort" && (
+          <InsertionSortVisualizer array={elements} />
+        )}
+        {visualize && id !== "bubble-sort" && id !== "selection-sort" && (
+          <div className="text-center text-lg p-8">
+            Visualization for {algorithm.name} is not available yet.
+          </div>
+        )}
       </div>
     </div>
   );
