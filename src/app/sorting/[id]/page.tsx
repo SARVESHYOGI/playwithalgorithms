@@ -2,11 +2,17 @@
 
 import { sortingAlgorithms } from "@/lib/data";
 import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import BubbleSortVisualizer from "@/components/algorithms/sorting/BubbleSortVisualizer";
 import SelectionSortVisualizer from "@/components/algorithms/sorting/SelectionSortVisualizer";
-import InsertionSortVisualizer from "@/components/algorithms/InsertionSortVisualizer";
+import MergeSortVisualizer from "@/components/algorithms/sorting/MergeSortVisualizer";
+import QuickSortVisualizer from "@/components/algorithms/sorting/QuickSortVisualizer";
+import HeapSortVisualizer from "@/components/algorithms/sorting/HeapSortVisualizer";
+import RadixSortVisualizer from "@/components/algorithms/sorting/RadixSortVisualizer";
+import BucketSortVisualizer from "@/components/algorithms/sorting/BucketSortVisualizer";
+import InsertionSortVisualizer from "@/components/algorithms/sorting/InsertionSortVisualizer";
 
 export default function SortingAlgorithmPage({
   params,
@@ -14,6 +20,8 @@ export default function SortingAlgorithmPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+  const router = useRouter();
+
   const [algorithm, setAlgorithm] = useState<
     { id: string; name: string; description: string } | undefined
   >(undefined);
@@ -50,7 +58,14 @@ export default function SortingAlgorithmPage({
   }
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-4 flex flex-col items-center">
+    <div className="w-full min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-4 flex flex-col items-center relative">
+      <Button
+        variant="outline"
+        className="absolute top-6 left-6"
+        onClick={() => router.back()}
+      >
+        ← Go Back
+      </Button>
       <div className="text-4xl font-extrabold text-gray-800 mb-4">
         {algorithm.name}
       </div>
@@ -110,11 +125,34 @@ export default function SortingAlgorithmPage({
         {visualize && id === "insertion-sort" && (
           <InsertionSortVisualizer array={elements} />
         )}
-        {visualize && id !== "bubble-sort" && id !== "selection-sort" && (
-          <div className="text-center text-lg p-8">
-            Visualization for {algorithm.name} is not available yet.
-          </div>
+        {visualize && id === "merge-sort" && (
+          <MergeSortVisualizer array={elements} />
         )}
+        {visualize && id === "quick-sort" && (
+          <QuickSortVisualizer array={elements} />
+        )}
+        {visualize && id === "heap-sort" && (
+          <HeapSortVisualizer array={elements} />
+        )}
+        {visualize && id === "radix-sort" && (
+          <RadixSortVisualizer array={elements} />
+        )}
+        {visualize && id === "bucket-sort" && (
+          <BucketSortVisualizer array={elements} />
+        )}
+        {visualize &&
+          id !== "bubble-sort" &&
+          id !== "selection-sort" &&
+          id !== "insertion-sort" &&
+          id !== "merge-sort" &&
+          id !== "quick-sort" &&
+          id !== "heap-sort" &&
+          id !== "radix-sort" &&
+          id !== "bucket-sort" && (
+            <div className="text-center text-lg p-8">
+              Visualization for {algorithm.name} is not available yet.
+            </div>
+          )}
       </div>
     </div>
   );

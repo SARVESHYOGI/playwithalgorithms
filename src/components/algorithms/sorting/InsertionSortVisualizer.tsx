@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function BubbleSortVisualizer({
+export default function InsertionSortVisualizer({
   array: initialArray,
 }: {
   array?: number[];
@@ -12,113 +12,100 @@ export default function BubbleSortVisualizer({
   const [currentStep, setCurrentStep] = useState<string>("");
   const [speed, setSpeed] = useState(600);
   const [comparisons, setComparisons] = useState(0);
-  const [swaps, setSwaps] = useState(0);
+  const [shifts, setShifts] = useState(0);
   const [currentPass, setCurrentPass] = useState(0);
-  const [pointerI, setPointerI] = useState<number | null>(null);
-  const [pointerJ, setPointerJ] = useState<number | null>(null);
-  const [sortedElements, setSortedElements] = useState<Set<number>>(new Set());
-  const [isSwapping, setIsSwapping] = useState(false);
-  const [lastSwappedIndices, setLastSwappedIndices] = useState<
-    [number, number] | null
-  >(null);
+  const [currentKey, setCurrentKey] = useState<number | null>(null);
+  const [currentPosition, setCurrentPosition] = useState<number | null>(null);
+  const [sortedElements, setSortedElements] = useState<Set<number>>(
+    new Set([0])
+  );
+  const [isShifting, setIsShifting] = useState(false);
+  const [shiftingElement, setShiftingElement] = useState<number | null>(null);
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  const bubbleSort = async () => {
+  const insertionSort = async () => {
     if (array.length <= 1) return;
 
     setIsSorting(true);
-    setCurrentStep("Starting Bubble Sort...");
+    setCurrentStep("Starting Insertion Sort...");
     setComparisons(0);
-    setSwaps(0);
+    setShifts(0);
     setCurrentPass(0);
-    setSortedElements(new Set());
+    setSortedElements(new Set([0]));
 
     const arr = [...array];
     const len = arr.length;
     let totalComparisons = 0;
-    let totalSwaps = 0;
+    let totalShifts = 0;
 
     await sleep(speed);
 
-    for (let i = 0; i < len - 1; i++) {
-      setCurrentPass(i + 1);
+    for (let i = 1; i < len; i++) {
+      setCurrentPass(i);
+      const key = arr[i];
+      setCurrentKey(i);
       setCurrentStep(
-        `Pass ${i + 1}: Bubbling largest unsorted element to position ${
-          len - 1 - i
-        }`
+        `Pass ${i}: Inserting element ${key} from position ${i} into sorted portion`
       );
       await sleep(speed);
 
-      let swapped = false;
+      let j = i - 1;
+      setCurrentPosition(j);
 
-      for (let j = 0; j < len - i - 1; j++) {
-        setPointerI(j);
-        setPointerJ(j + 1);
-
-        setCurrentStep(
-          `Pass ${i + 1}: Comparing elements at positions ${j} and ${j + 1} (${
-            arr[j]
-          } vs ${arr[j + 1]})`
-        );
+      while (j >= 0) {
         totalComparisons++;
         setComparisons(totalComparisons);
-
+        setCurrentStep(
+          `Pass ${i}: Comparing ${key} with ${arr[j]} at position ${j}`
+        );
         await sleep(speed);
 
-        if (arr[j] > arr[j + 1]) {
-          setIsSwapping(true);
-          setLastSwappedIndices([j, j + 1]);
+        if (arr[j] > key) {
+          setIsShifting(true);
+          setShiftingElement(j);
           setCurrentStep(
-            `Pass ${i + 1}: Swapping ${arr[j]} and ${arr[j + 1]} (${arr[j]} > ${
-              arr[j + 1]
-            })`
+            `Pass ${i}: Shifting ${arr[j]} right (${arr[j]} > ${key})`
           );
 
-          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+          arr[j + 1] = arr[j];
           setArray([...arr]);
-          totalSwaps++;
-          setSwaps(totalSwaps);
-          swapped = true;
+          totalShifts++;
+          setShifts(totalShifts);
 
           await sleep(speed);
-          setIsSwapping(false);
-          setLastSwappedIndices(null);
+          setIsShifting(false);
+          setShiftingElement(null);
+
+          j--;
+          setCurrentPosition(j >= 0 ? j : null);
         } else {
           setCurrentStep(
-            `Pass ${i + 1}: No swap needed (${arr[j]} ≤ ${arr[j + 1]})`
+            `Pass ${i}: Found correct position (${arr[j]} ≤ ${key})`
           );
           await sleep(speed / 2);
+          break;
         }
       }
 
-      setSortedElements((prev) => new Set([...prev, len - i - 1]));
-      setCurrentStep(
-        `Pass ${i + 1} completed: Element ${
-          arr[len - i - 1]
-        } is now in its final position`
-      );
+      arr[j + 1] = key;
+      setArray([...arr]);
+      setCurrentStep(`Pass ${i}: Inserted ${key} at position ${j + 1}`);
+
+      const newSorted = new Set<number>();
+      for (let k = 0; k <= i; k++) {
+        newSorted.add(k);
+      }
+      setSortedElements(newSorted);
+
       await sleep(speed);
-
-      if (!swapped) {
-        setCurrentStep("No swaps in this pass - array is already sorted!");
-        const newSorted = new Set<number>();
-        for (let k = 0; k < len; k++) {
-          newSorted.add(k);
-        }
-        setSortedElements(newSorted);
-        await sleep(speed);
-        break;
-      }
     }
 
-    setSortedElements((prev) => new Set([...prev, 0]));
-
-    setPointerI(null);
-    setPointerJ(null);
+    setCurrentKey(null);
+    setCurrentPosition(null);
     setCurrentStep(
-      `Bubble Sort completed! Array sorted in ${currentPass} passes with ${totalComparisons} comparisons and ${totalSwaps} swaps.`
+      `Insertion Sort completed! Array sorted in ${currentPass} passes with ${totalComparisons} comparisons and ${totalShifts} shifts.`
     );
     await sleep(1500);
     setCurrentStep("");
@@ -134,13 +121,13 @@ export default function BubbleSortVisualizer({
   const resetVisualization = () => {
     setCurrentStep("");
     setComparisons(0);
-    setSwaps(0);
+    setShifts(0);
     setCurrentPass(0);
-    setPointerI(null);
-    setPointerJ(null);
-    setSortedElements(new Set());
-    setIsSwapping(false);
-    setLastSwappedIndices(null);
+    setCurrentKey(null);
+    setCurrentPosition(null);
+    setSortedElements(new Set([0]));
+    setIsShifting(false);
+    setShiftingElement(null);
   };
 
   const getColor = (value: number, index: number) => {
@@ -157,61 +144,54 @@ export default function BubbleSortVisualizer({
   };
 
   const getBarColor = (index: number, value: number) => {
-    if (sortedElements.has(index)) return "#10b981";
-    if (
-      lastSwappedIndices &&
-      (lastSwappedIndices[0] === index || lastSwappedIndices[1] === index)
-    ) {
-      return "#f59e0b";
-    }
-    if (pointerI === index || pointerJ === index) return "#ef4444";
+    if (sortedElements.has(index) && index !== currentKey) return "#10b981";
+    if (currentKey === index) return "#8b5cf6";
+    if (shiftingElement === index) return "#f59e0b";
+    if (currentPosition === index) return "#ef4444";
     return getColor(value, index);
   };
 
   const getBarBorder = (index: number) => {
-    if (
-      isSwapping &&
-      lastSwappedIndices &&
-      (lastSwappedIndices[0] === index || lastSwappedIndices[1] === index)
-    ) {
-      return "ring-4 ring-orange-400 animate-pulse";
+    if (currentKey === index) {
+      return "ring-4 ring-purple-400 scale-110 animate-pulse";
     }
-    if (pointerI === index || pointerJ === index) {
-      return "ring-4 ring-red-400 scale-110";
+    if (isShifting && shiftingElement === index) {
+      return "ring-4 ring-orange-400 animate-bounce";
     }
-    if (sortedElements.has(index)) {
+    if (currentPosition === index) {
+      return "ring-4 ring-red-400 scale-105";
+    }
+    if (sortedElements.has(index) && index !== currentKey) {
       return "ring-2 ring-green-400";
     }
     return "border-white/30";
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6 w-full max-w-7xl mx-auto bg-gradient-to-br from-slate-50 to-orange-50 rounded-2xl shadow-xl">
+    <div className="flex flex-col items-center gap-6 p-6 w-full max-w-7xl mx-auto bg-gradient-to-br from-slate-50 to-purple-50 rounded-2xl shadow-xl">
       <div className="text-center">
-        <h2 className="text-4xl font-bold text-slate-800 mb-2 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-          Bubble Sort Visualizer
+        <h2 className="text-4xl font-bold text-slate-800 mb-2 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+          Insertion Sort Visualizer
         </h2>
         <p className="text-slate-600">
-          Watch how Bubble Sort compares adjacent elements and bubbles larger
-          values to the end!
+          Watch how Insertion Sort builds a sorted array one element at a time
+          by inserting each element into its correct position!
         </p>
       </div>
 
       <div className="flex gap-6 bg-white rounded-lg px-6 py-3 shadow-md">
         <div className="text-center">
-          <div className="text-2xl font-bold text-orange-600">
+          <div className="text-2xl font-bold text-purple-600">
             {comparisons}
           </div>
           <div className="text-sm text-slate-600">Comparisons</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-red-600">{swaps}</div>
-          <div className="text-sm text-slate-600">Swaps</div>
+          <div className="text-2xl font-bold text-orange-600">{shifts}</div>
+          <div className="text-sm text-slate-600">Shifts</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-purple-600">
-            {currentPass}
-          </div>
+          <div className="text-2xl font-bold text-blue-600">{currentPass}</div>
           <div className="text-sm text-slate-600">Current Pass</div>
         </div>
         <div className="text-center">
@@ -222,7 +202,7 @@ export default function BubbleSortVisualizer({
         </div>
       </div>
 
-      <div className="bg-white rounded-lg px-4 py-2 shadow-md min-h-[50px] flex items-center justify-center border-l-4 border-orange-500">
+      <div className="bg-white rounded-lg px-4 py-2 shadow-md min-h-[50px] flex items-center justify-center border-l-4 border-purple-500">
         <p className="text-slate-700 font-medium text-center">
           {currentStep || "Click 'Start Sort' to begin visualization"}
         </p>
@@ -235,7 +215,7 @@ export default function BubbleSortVisualizer({
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
             disabled={isSorting}
-            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
             <option value={1200}>Slow</option>
             <option value={600}>Medium</option>
@@ -258,8 +238,9 @@ export default function BubbleSortVisualizer({
         </h3>
         <div className="flex gap-2 w-full items-end justify-center overflow-x-auto min-h-[250px] relative">
           {array.map((value, index) => {
-            const isPointer = pointerI === index || pointerJ === index;
-            const isSorted = sortedElements.has(index);
+            const isKey = currentKey === index;
+            const isPosition = currentPosition === index;
+            const isSorted = sortedElements.has(index) && index !== currentKey;
 
             return (
               <div
@@ -274,7 +255,9 @@ export default function BubbleSortVisualizer({
                     width: Math.max(array.length <= 10 ? 50 : 40, 35),
                     height: `${getBarHeight(value)}px`,
                     backgroundColor: getBarColor(index, value),
-                    boxShadow: isPointer
+                    boxShadow: isKey
+                      ? "0 8px 25px rgba(139, 92, 246, 0.4)"
+                      : isPosition
                       ? "0 8px 25px rgba(239, 68, 68, 0.4)"
                       : isSorted
                       ? "0 4px 15px rgba(16, 185, 129, 0.4)"
@@ -292,13 +275,13 @@ export default function BubbleSortVisualizer({
                   <div className="text-xs text-slate-600 font-medium mb-1">
                     {index}
                   </div>
-                  {pointerI === index && (
-                    <div className="text-xs text-red-500 font-bold">
+                  {currentKey === index && (
+                    <div className="text-xs text-purple-600 font-bold">
                       <div>↑</div>
-                      <div>i</div>
+                      <div>key</div>
                     </div>
                   )}
-                  {pointerJ === index && (
+                  {currentPosition === index && (
                     <div className="text-xs text-red-500 font-bold">
                       <div>↑</div>
                       <div>j</div>
@@ -327,7 +310,7 @@ export default function BubbleSortVisualizer({
                   i < currentPass
                     ? "bg-green-500 text-white"
                     : i === currentPass - 1
-                    ? "bg-orange-500 text-white animate-pulse"
+                    ? "bg-purple-500 text-white animate-pulse"
                     : "bg-gray-200 text-gray-500"
                 }`}
               >
@@ -347,12 +330,16 @@ export default function BubbleSortVisualizer({
 
       <div className="flex flex-wrap gap-4 text-sm bg-white p-3 rounded-lg shadow-md">
         <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-purple-500 rounded"></div>
+          <span>Current Key</span>
+        </div>
+        <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-red-500 rounded"></div>
           <span>Comparing</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-orange-500 rounded"></div>
-          <span>Swapping</span>
+          <span>Shifting</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-green-500 rounded"></div>
@@ -366,12 +353,12 @@ export default function BubbleSortVisualizer({
 
       <div className="flex flex-wrap gap-4 mt-4">
         <button
-          onClick={bubbleSort}
+          onClick={insertionSort}
           disabled={isSorting}
           className={`px-8 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
             isSorting
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 hover:scale-105 active:scale-95 shadow-lg"
+              : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 hover:scale-105 active:scale-95 shadow-lg"
           } text-white`}
         >
           {isSorting ? "Sorting..." : "Start Sort"}
@@ -383,7 +370,7 @@ export default function BubbleSortVisualizer({
           className={`px-8 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
             isSorting
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 hover:scale-105 active:scale-95 shadow-lg"
+              : "bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 hover:scale-105 active:scale-95 shadow-lg"
           } text-white`}
         >
           Reset
@@ -392,18 +379,18 @@ export default function BubbleSortVisualizer({
 
       <div className="bg-white rounded-lg p-4 shadow-md max-w-4xl">
         <h3 className="font-bold text-slate-800 mb-2">
-          How Bubble Sort Works:
+          How Insertion Sort Works:
         </h3>
         <p className="text-slate-600 text-sm mb-2">
-          Bubble Sort repeatedly compares adjacent elements and swaps them if
-          theyre in the wrong order. After each pass, the largest unsorted
-          element bubbles to its correct position at the end of the array. The
-          algorithm continues until no swaps are needed.
+          Insertion Sort builds a sorted array one element at a time by taking
+          each element from the unsorted portion and inserting it into its
+          correct position within the already sorted portion. Its like sorting
+          playing cards in your hand.
         </p>
         <div className="text-slate-600 text-sm">
-          <strong>Steps:</strong> 1. Compare adjacent elements • 2. Swap if left
-          &gt; right • 3. Continue through array • 4. Repeat until no swaps
-          needed
+          <strong>Steps:</strong> 1) Start with second element as key • 2)
+          Compare key with sorted elements • 3) Shift larger elements right • 4)
+          Insert key at correct position
         </div>
         <div className="text-slate-600 text-sm mt-2">
           <strong>Time Complexity:</strong> Best case O(n), Average case O(n²),

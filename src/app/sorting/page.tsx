@@ -1,11 +1,20 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { sortingAlgorithms } from "@/lib/data";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SortingPage() {
+  const router = useRouter();
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-100">
+    <div className="w-full h-screen flex flex-col items-center justify-center relative">
+      <Button
+        className="absolute top-6 left-8 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded"
+        onClick={() => router.back()}
+      >
+        Back
+      </Button>
       <div className="text-3xl font-bold text-gray-800 m-2">
         Sorting Algorithms
       </div>
