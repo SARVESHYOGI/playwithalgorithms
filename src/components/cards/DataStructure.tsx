@@ -6,7 +6,9 @@ const DataStructure = forwardRef<HTMLDivElement>((_, ref) => {
       ref={ref}
       className="w-full h-screen flex items-center justify-center bg-gray-100"
     >
-      <div className="text-2xl font-bold text-gray-800">DataStructure Page</div>
+      <div className="text-2xl font-bold text-gray-800">
+        Data Structure Page
+      </div>
     </div>
   );
 });
