@@ -1,12 +1,13 @@
 import React, { forwardRef } from "react";
+import SearchingTemp from "../Templates/SearchingTemp";
 
 const Searching = forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <div
       ref={ref}
-      className="w-full h-screen flex items-center justify-center bg-gray-100"
+      className="w-full min-h-screen flex items-center justify-center bg-background "
     >
-      <div className="text-2xl font-bold text-gray-800">Searching Page</div>
+      <SearchingTemp />
     </div>
   );
 });

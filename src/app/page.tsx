@@ -10,7 +10,7 @@ export default function Home() {
   };
   return (
     <>
-      <div className="flex flex-col items-center justify-center h-screen bg-amber-50 relative">
+      <div className="flex flex-col items-center justify-center h-screen bg-background relative">
         <div className="text-9xl text-center font-bold">
           Play with Algorithms
         </div>

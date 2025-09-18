@@ -48,3 +48,17 @@ export const sortingAlgorithms = [
       "A sorting algorithm that divides the data into several buckets and then sorts each bucket.",
   },
 ];
+
+
+export const searchAlgorithms = [
+  { 
+    id: "linear", 
+    name: "Linear Search", 
+    description: "Checks each element one by one until the target is found or the list ends." 
+  },
+  { 
+    id: "binary", 
+    name: "Binary Search", 
+    description: "Efficiently finds the target by repeatedly dividing a sorted list in half." 
+  },
+];
