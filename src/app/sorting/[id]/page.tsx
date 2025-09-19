@@ -13,6 +13,7 @@ import HeapSortVisualizer from "@/components/algorithms/sorting/HeapSortVisualiz
 import RadixSortVisualizer from "@/components/algorithms/sorting/RadixSortVisualizer";
 import BucketSortVisualizer from "@/components/algorithms/sorting/BucketSortVisualizer";
 import InsertionSortVisualizer from "@/components/algorithms/sorting/InsertionSortVisualizer";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function SortingAlgorithmPage({
   params,
@@ -58,22 +59,24 @@ export default function SortingAlgorithmPage({
   }
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-4 flex flex-col items-center relative">
+    <div className="w-full min-h-screen bg-background  py-10 px-4 flex flex-col items-center relative">
       <Button
-        variant="outline"
-        className="absolute top-6 left-6"
+        className="absolute top-6 left-8 bg-background-100 hover:bg-background-200 text-background-900 font-semibold py-2 px-4 rounded cursor-pointer shadow"
         onClick={() => router.back()}
       >
         ← Go Back
       </Button>
-      <div className="text-4xl font-extrabold text-gray-800 mb-4">
+      <div className="absolute top-6 right-[10%]">
+        <ThemeToggle />
+      </div>
+      <div className="text-4xl font-extrabold text-background-900 mb-4">
         {algorithm.name}
       </div>
-      <p className="text-lg text-gray-600 max-w-3xl text-center mb-8">
+      <p className="text-lg text-background-600 max-w-3xl text-center mb-8">
         {algorithm.description}
       </p>
 
-      <div className="flex flex-col w-full bg-white rounded-lg shadow p-6">
+      <div className="flex flex-col w-full bg-background rounded-lg shadow p-6">
         <div className="flex items-center justify-center gap-4 mb-4">
           <label htmlFor="size" className="font-medium">
             Number of Elements
@@ -86,7 +89,9 @@ export default function SortingAlgorithmPage({
             placeholder="e.g., 6"
             className="w-24"
           />
-          <Button onClick={Randomize}>Randomize Elements</Button>
+          <Button onClick={Randomize} className="cursor-pointer">
+            Randomize Elements
+          </Button>
         </div>
 
         <div className="mt-6 mx-auto">
@@ -109,7 +114,7 @@ export default function SortingAlgorithmPage({
 
         <Button
           onClick={() => setVisualize(true)}
-          className="mt-6 w-fit bg-green-600 hover:bg-green-700 mx-auto"
+          className="mt-6 w-fit bg-background-600 hover:bg-background-500 mx-auto cursor-pointer"
         >
           Visualize
         </Button>

@@ -15,8 +15,8 @@ export default function SearchingPage() {
       >
         Back
       </Button>
-      <div className="text-3xl font-bold text-gray-800 m-2">
-        Sorting Algorithms
+      <div className="text-5xl font-bold text-background m-2">
+        Searching Algorithms
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full px-4">
         {searchAlgorithms.map((algorithm, index) => (

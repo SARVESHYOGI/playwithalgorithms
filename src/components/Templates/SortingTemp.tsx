@@ -220,7 +220,7 @@ export default function SortingTemp() {
         </div>
       </div>
 
-      <div className="col-span-1 flex flex-col p-4 text-white h-full justify-around">
+      <div className="col-span-1 flex flex-col p-4 text-background h-full justify-around">
         {sortingAlgorithms.map((algorithm) => (
           <Link
             key={algorithm.id}
