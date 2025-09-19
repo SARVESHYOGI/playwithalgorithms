@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { searchAlgorithms } from "@/lib/data";
 
 function SearchingAnimation() {
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [animationData, setAnimationData] = useState<number[]>([]);
   const [target, setTarget] = useState<number | null>(null);
   const [foundIndex, setFoundIndex] = useState<number | null>(null);
@@ -70,14 +70,71 @@ function SearchingAnimation() {
     return (value / 90) * 120 + 20;
   };
 
+  const getBarColor = (value: number, index: number) => {
+    // const theme = document.documentElement.getAttribute("data-theme");
+
+    const primaryColors = [
+      // "--primary-50",
+      // "--primary-100",
+      "--primary-200",
+      "--primary-300",
+      "--primary-400",
+      "--primary-500",
+      "--primary-600",
+      "--primary-700",
+      "--primary-800",
+      "--primary-900",
+      "--primary-950",
+    ];
+    const secondaryColors = [
+      // "--secondary-50",
+      // "--secondary-100",
+      "--secondary-200",
+      "--secondary-300",
+      "--secondary-400",
+      "--secondary-500",
+      "--secondary-600",
+      "--secondary-700",
+      "--secondary-800",
+      "--secondary-900",
+      "--secondary-950",
+    ];
+    const accentColors = [
+      // "--accent-50",
+      // "--accent-100",
+      "--accent-200",
+      "--accent-300",
+      "--accent-400",
+      "--accent-500",
+      "--accent-600",
+      "--accent-700",
+      "--accent-800",
+      "--accent-900",
+      "--accent-950",
+    ];
+
+    let colorSet = primaryColors;
+
+    if (index % 3 === 1) colorSet = secondaryColors;
+    if (index % 3 === 2) colorSet = accentColors;
+
+    const colorIndex = (value + index) % colorSet.length;
+
+    const colorVariable = colorSet[colorIndex];
+
+    return getComputedStyle(document.documentElement)
+      .getPropertyValue(colorVariable)
+      .trim();
+  };
+
   const getBarStyle = (value: number, index: number) => {
     if (foundIndex === index) {
       return {
         width: "36px",
         height: `${getBarHeight(value)}px`,
-        backgroundColor: "hsl(120, 70%, 50%)",
+        backgroundColor: "#00FF00",
         borderRadius: "50%",
-        transform: "scale(1.3)",
+        // transform: "scale(1.3)",
         transition: "all 0.5s ease",
         boxShadow: "0 6px 12px rgba(0, 128, 0, 0.4)",
       };
@@ -86,35 +143,34 @@ function SearchingAnimation() {
       return {
         width: "28px",
         height: `${getBarHeight(value)}px`,
-        backgroundColor: "hsl(40, 90%, 60%)",
+        backgroundColor: `#FFFF00`,
         borderRadius: "6px",
         transition: "all 0.3s ease",
       };
     }
-    const hue = (value * 4 + index * 30) % 360;
     return {
       width: "28px",
       height: `${getBarHeight(value)}px`,
-      backgroundColor: `hsl(${hue}, 70%, 60%)`,
+      backgroundColor: `${getBarColor(value, index)}`,
       borderRadius: "6px",
       transition: "all 0.3s ease",
     };
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 mb-16 border border-gray-100">
+    <div className="p-8 mb-16 ">
       <div className="text-center mb-8">
-        <h3 className="text-2xl font-bold text-gray-800 mb-2">
+        <h3 className="text-2xl font-bold text-text-950 mb-2">
           Live Searching Animation
         </h3>
-        <p className="text-gray-600">
+        <p className="text-text-700">
           Searching for the number{" "}
-          <span className="font-bold text-indigo-600 text-lg">{target}</span>{" "}
-          using Linear Search!
+          <span className="font-bold text-primary text-lg">{target}</span> using
+          Linear Search!
         </p>
       </div>
 
-      <div className="flex justify-center items-end gap-2 h-48 bg-gradient-to-t from-gray-50 to-transparent rounded-lg p-4">
+      <div className="flex justify-center items-end gap-2 h-48 bg-gradient-to-b from-background-900 to-transparent rounded-lg p-4">
         {animationData.map((value, index) => (
           <div
             key={`${index}-${value}`}
@@ -131,12 +187,14 @@ function SearchingAnimation() {
       <div className="text-center mt-6">
         <div
           className={`inline-flex items-center space-x-2 ${
-            isAnimating ? "text-green-600" : "text-gray-500"
+            isAnimating ? "text-background-950" : "text-background-500"
           }`}
         >
           <div
             className={`w-3 h-3 rounded-full ${
-              isAnimating ? "bg-green-500 animate-pulse" : "bg-gray-400"
+              isAnimating
+                ? "bg-background-950 animate-pulse"
+                : "bg-background-400"
             }`}
           ></div>
           <span className="font-medium">
@@ -157,16 +215,16 @@ function SearchingAnimation() {
 function Exp() {
   return (
     <div className="text-center">
-      <div className="bg-gradient-to-r from-background-400 via-background-500 to-background-600 rounded-3xl p-10 text-white shadow-2xl">
-        <h2 className="text-4xl font-bold mb-6 text-text-900">
+      <div className="bg-primary rounded-3xl p-10 text-background  shadow-2xl">
+        <h2 className="text-4xl font-bold mb-6 text-background">
           Ready to Explore?
         </h2>
-        <p className="text-xl mb-8 text-purple-100">
+        <p className="text-xl mb-8 text-background-100">
           Dive into interactive visualizations and see these algorithms in
           action!
         </p>
         <Link href="/searching">
-          <Button className="p-12 text-2xl font-bold rounded-xl bg-background-700 hover:bg-background-800 hover:cursor-pointer">
+          <Button className="p-12 text-2xl font-bold rounded-xl bg-secondary text-text-950 cursor-pointer hover:bg-secondary/70 dark:text-black">
             Let&apos;s Search! 🔎
           </Button>
         </Link>
@@ -178,10 +236,10 @@ function Exp() {
 function SearchingTitle() {
   return (
     <div className="text-center mb-16">
-      <h1 className="text-6xl md:text-7xl font-extrabold text-accent-950 drop-shadow-lg">
+      <h1 className="text-6xl md:text-7xl font-extrabold text-primary-950 drop-shadow-lg">
         Searching Algorithms
       </h1>
-      <p className="text-lg md:text-xl text-accent-800 max-w-3xl mx-auto leading-relaxed px-4">
+      <p className="text-lg md:text-xl text-primary-800 max-w-3xl mx-auto leading-relaxed px-4">
         Discover how computers find data efficiently. From simple linear scans
         to highly optimized binary searches, this is a core concept in computer
         science.
@@ -205,14 +263,14 @@ export default function SearchingTemp() {
         </div>
       </div>
 
-      <div className="col-span-1 flex flex-col p-4 bg-background text-white rounded-lg shadow-md h-full justify-evenly">
+      <div className="col-span-1 flex flex-col p-4 text-white rounded-lg h-full justify-evenly">
         {searchAlgorithms.map((algorithm) => (
           <Link
             key={algorithm.id}
             href={`/searching/${algorithm.id}`}
             className="h-full my-1 bg-accent-300 hover:cursor-pointer"
           >
-            <Button className="w-full h-full bg-accent hover:cursor-pointer">
+            <Button className="w-full h-full bg-primary hover:cursor-pointer hover:bg-primary/70">
               {algorithm.name}
             </Button>
           </Link>

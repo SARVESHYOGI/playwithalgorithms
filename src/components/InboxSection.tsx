@@ -5,6 +5,7 @@ import Sorting from "./cards/Sorting";
 import LinearDataStructure from "./cards/LinearDataStructure";
 import HashDataStructure from "./cards/HashDataStructure";
 import NonLinearDataStructure from "./cards/NonLinearDataStructure";
+import ThemeToggle from "./ThemeToggle";
 
 const InboxSection = forwardRef<HTMLDivElement>((_, ref) => {
   const SortingRef = useRef<HTMLDivElement>(null);
@@ -31,42 +32,44 @@ const InboxSection = forwardRef<HTMLDivElement>((_, ref) => {
     <>
       <div
         ref={ref}
-        className="p-10 bg-background-50 min-h-screen w-full flex flex-col justify-between items-stretch my-auto"
+        className="px-40 bg-background-50 min-h-screen w-full flex flex-col justify-evenly my-auto"
       >
-        <ul className="flex h-screen flex-col justify-evenly">
-          <li
-            className="p-4 border rounded shadow-sm"
-            onClick={scrollToSorting}
-          >
-            Sorting
-          </li>
-          <li
-            className="p-4 border rounded shadow-sm"
-            onClick={scrollToSearching}
-          >
-            Searching
-          </li>
-
-          <li
-            className="p-4 border rounded shadow-sm"
-            onClick={scrollToLinearDataStructure}
-          >
-            Linear Data Structure{" "}
-          </li>
-          <li
-            className="p-4 border rounded shadow-sm"
-            onClick={scrollToHashDataStructure}
-          >
-            Hash Data Structure
-          </li>
-          <li
-            className="p-4 border rounded shadow-sm"
-            onClick={scrollToNonLinearDataStructure}
-          >
-            Non-Linear Data Structure
-          </li>
-        </ul>
+        <div className="flex flex-col flex-grow">
+          <ul className="flex flex-col flex-grow justify-evenly">
+            <li
+              className="p-4 shadow-sm bg-background"
+              onClick={scrollToSorting}
+            >
+              Sorting
+            </li>
+            <li
+              className="p-4 shadow-sm bg-background"
+              onClick={scrollToSearching}
+            >
+              Searching
+            </li>
+            <li
+              className="p-4 shadow-sm bg-background"
+              onClick={scrollToLinearDataStructure}
+            >
+              Linear Data Structure
+            </li>
+            <li
+              className="p-4 shadow-sm bg-background"
+              onClick={scrollToHashDataStructure}
+            >
+              Hash Data Structure
+            </li>
+            <li
+              className="p-4 shadow-sm bg-background"
+              onClick={scrollToNonLinearDataStructure}
+            >
+              Non-Linear Data Structure
+            </li>
+          </ul>
+        </div>
       </div>
+
       <div>
         <Sorting ref={SortingRef} />
         <Searching ref={SearchingRef} />

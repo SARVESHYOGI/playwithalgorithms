@@ -56,22 +56,74 @@ function SortingAnimation() {
   };
 
   const getBarColor = (value: number, index: number) => {
-    const hue = (value * 4 + index * 30) % 360;
-    return `hsl(${hue}, 70%, 60%)`;
+    // const theme = document.documentElement.getAttribute("data-theme");
+
+    const primaryColors = [
+      // "--primary-50",
+      // "--primary-100",
+      "--primary-200",
+      "--primary-300",
+      "--primary-400",
+      "--primary-500",
+      "--primary-600",
+      "--primary-700",
+      "--primary-800",
+      "--primary-900",
+      "--primary-950",
+    ];
+    const secondaryColors = [
+      // "--secondary-50",
+      // "--secondary-100",
+      "--secondary-200",
+      "--secondary-300",
+      "--secondary-400",
+      "--secondary-500",
+      "--secondary-600",
+      "--secondary-700",
+      "--secondary-800",
+      "--secondary-900",
+      "--secondary-950",
+    ];
+    const accentColors = [
+      // "--accent-50",
+      // "--accent-100",
+      "--accent-200",
+      "--accent-300",
+      "--accent-400",
+      "--accent-500",
+      "--accent-600",
+      "--accent-700",
+      "--accent-800",
+      "--accent-900",
+      "--accent-950",
+    ];
+
+    let colorSet = primaryColors;
+
+    if (index % 3 === 1) colorSet = secondaryColors;
+    if (index % 3 === 2) colorSet = accentColors;
+
+    const colorIndex = (value + index) % colorSet.length;
+
+    const colorVariable = colorSet[colorIndex];
+
+    return getComputedStyle(document.documentElement)
+      .getPropertyValue(colorVariable)
+      .trim();
   };
 
   return (
-    <div className="bg-background-100 rounded-2xl shadow-xl p-8 border border-gray-100">
+    <div className="bg-background rounded-2xl p-8">
       <div className="text-center mb-8">
-        <h3 className="text-2xl font-bold text-gray-800 mb-2">
+        <h3 className="text-2xl font-bold text-text-950 mb-2">
           Live Sorting Animation
         </h3>
-        <p className="text-gray-600">
+        <p className="text-text-700">
           Watch as numbers get sorted in real-time!
         </p>
       </div>
 
-      <div className="flex justify-center items-end gap-2 h-48 bg-gradient-to-t from-gray-50 to-transparent rounded-lg p-4">
+      <div className="flex justify-center items-end gap-2 h-48 bg-gradient-to-b from-background-900 to-transparent rounded-lg p-4">
         {animationData.map((value, index) => (
           <div
             key={`${index}-${value}`}
@@ -95,12 +147,14 @@ function SortingAnimation() {
       <div className="text-center mt-6">
         <div
           className={`inline-flex items-center space-x-2 ${
-            isAnimating ? "text-green-600" : "text-gray-500"
+            isAnimating ? "text-background-950" : "text-background-500"
           }`}
         >
           <div
             className={`w-3 h-3 rounded-full ${
-              isAnimating ? "bg-green-500 animate-pulse" : "bg-gray-400"
+              isAnimating
+                ? "bg-background-950 animate-pulse"
+                : "bg-background-400"
             }`}
           ></div>
           <span className="font-medium">
@@ -115,16 +169,19 @@ function SortingAnimation() {
 function Exp() {
   return (
     <div className="text-center">
-      <div className="bg-gradient-to-r from-background-400 via-background-500 to-background-600 rounded-3xl p-10 text-white shadow-2xl">
-        <h2 className="text-4xl font-bold mb-6 text-text-950">
+      <div className="bg-primary rounded-3xl p-10 text-background  shadow-2xl">
+        <h2 className="text-4xl font-bold mb-6 text-background ">
           Ready to Explore?
         </h2>
-        <p className="text-xl mb-8 text-purple-100">
+        <p className="text-xl mb-8 text-background-100">
           Dive into interactive visualizations and see these algorithms in
           action!
         </p>
-        <Link href="/sorting">
-          <Button className="p-12 text-2xl font-bold rounded-xl bg-background-700 hover:bg-background-800 hover:cursor-pointer">
+        <Link
+          href="/sorting"
+          className="w-full h-full bg-primary hover:cursor-pointer"
+        >
+          <Button className="p-12 text-2xl font-bold rounded-xl bg-secondary text-text-950 cursor-pointer hover:bg-secondary/70 dark:text-black">
             Let&apos;s Sort! 🚀
           </Button>
         </Link>
@@ -163,14 +220,14 @@ export default function SortingTemp() {
         </div>
       </div>
 
-      <div className="col-span-1 flex flex-col p-4 text-white rounded-lg shadow-md bg-background-100 h-full justify-around">
+      <div className="col-span-1 flex flex-col p-4 text-white h-full justify-around">
         {sortingAlgorithms.map((algorithm) => (
           <Link
             key={algorithm.id}
             href={`/sorting/${algorithm.id}`}
             className="h-full my-1 bg-accent-300 hover:cursor-pointer"
           >
-            <Button className="w-full h-full bg-accent hover:cursor-pointer">
+            <Button className="w-full h-full bg-primary hover:cursor-pointer hover:bg-primary/70">
               {algorithm.name}
             </Button>
           </Link>

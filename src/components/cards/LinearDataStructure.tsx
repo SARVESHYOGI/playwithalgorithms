@@ -5,7 +5,7 @@ const LinearDataStructure = forwardRef<HTMLDivElement>((_, ref) => {
   return (
     <div
       ref={ref}
-      className="w-full h-screen flex items-center justify-center bg-gray-100"
+      className="w-full h-screen flex items-center justify-center bg-background-500"
     >
       <LinearDataStructuresTemp />
     </div>
