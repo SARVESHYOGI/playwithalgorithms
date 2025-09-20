@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export default function SelectionSortVisualizer({
@@ -11,7 +12,6 @@ export default function SelectionSortVisualizer({
   const [isSorting, setIsSorting] = useState(false);
   const [currentStep, setCurrentStep] = useState<string>("");
   const [speed, setSpeed] = useState(600);
-  const [arraySize, setArraySize] = useState(7);
   const [comparisons, setComparisons] = useState(0);
   const [swaps, setSwaps] = useState(0);
   const [currentPass, setCurrentPass] = useState(0);
@@ -134,16 +134,6 @@ export default function SelectionSortVisualizer({
     setIsSorting(false);
   };
 
-  const generateRandomArray = () => {
-    if (isSorting) return;
-    const newArray = Array.from(
-      { length: arraySize },
-      () => Math.floor(Math.random() * 100) + 1
-    );
-    setArray(newArray);
-    resetVisualization();
-  };
-
   const resetArray = () => {
     if (isSorting) return;
     setArray(initialArray || [64, 34, 25, 12, 22, 11, 90]);
@@ -163,9 +153,61 @@ export default function SelectionSortVisualizer({
     setSwappingIndices(null);
   };
 
-  const getColor = (value: number, index: number) => {
-    const hue = (value * 3.6 + index * 30) % 360;
-    return `hsl(${hue}, 70%, 60%)`;
+  const getBarColor = (index: number, value: number) => {
+    // const theme = document.documentElement.getAttribute("data-theme");
+
+    const primaryColors = [
+      // "--primary-50",
+      // "--primary-100",
+      // "--primary-200",
+      // "--primary-300",
+      "--primary-400",
+      "--primary-500",
+      "--primary-600",
+      "--primary-700",
+      "--primary-800",
+      // "--primary-900",
+      // "--primary-950",
+    ];
+    const secondaryColors = [
+      // "--secondary-50",
+      // "--secondary-100",
+      // "--secondary-200",
+      // "--secondary-300",
+      "--secondary-400",
+      "--secondary-500",
+      "--secondary-600",
+      "--secondary-700",
+      "--secondary-800",
+      // "--secondary-900",
+      // "--secondary-950",
+    ];
+    const accentColors = [
+      // "--accent-50",
+      // "--accent-100",
+      // "--accent-200",
+      // "--accent-300",
+      "--accent-400",
+      "--accent-500",
+      "--accent-600",
+      "--accent-700",
+      "--accent-800",
+      // "--accent-900",
+      // "--accent-950",
+    ];
+
+    let colorSet = primaryColors;
+
+    if (index % 3 === 1) colorSet = secondaryColors;
+    if (index % 3 === 2) colorSet = accentColors;
+
+    const colorIndex = (value + index) % colorSet.length;
+
+    const colorVariable = colorSet[colorIndex];
+
+    return getComputedStyle(document.documentElement)
+      .getPropertyValue(colorVariable)
+      .trim();
   };
 
   const getBarHeight = (value: number) => {
@@ -174,20 +216,6 @@ export default function SelectionSortVisualizer({
     const maxValue = Math.max(...array, 100);
     const normalizedValue = value / maxValue;
     return Math.max(minHeight, normalizedValue * maxHeight);
-  };
-
-  const getBarColor = (index: number, value: number) => {
-    if (sortedElements.has(index)) return "#10b981";
-    if (
-      swappingIndices &&
-      (swappingIndices[0] === index || swappingIndices[1] === index)
-    ) {
-      return "#f59e0b";
-    }
-    if (currentIndex === index) return "#8b5cf6";
-    if (minIndex === index) return "#ef4444";
-    if (compareIndex === index) return "#06b6d4";
-    return getColor(value, index);
   };
 
   const getBarBorder = (index: number) => {
@@ -214,72 +242,84 @@ export default function SelectionSortVisualizer({
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6 w-full max-w-7xl mx-auto bg-gradient-to-br from-slate-50 to-cyan-50 rounded-2xl shadow-xl">
+    <div className="flex flex-col items-center gap-6 p-6 w-full max-w-7xl mx-auto bg-background-100 rounded-2xl shadow-xl">
       <div className="text-center">
-        <h2 className="text-4xl font-bold text-slate-800 mb-2 bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-bold text-background-950">
           Selection Sort Visualizer
         </h2>
-        <p className="text-slate-600">
+        <p className="text-background-600">
           Watch how Selection Sort finds the minimum element and places it in
           the correct position!
         </p>
       </div>
 
-      <div className="flex gap-6 bg-white rounded-lg px-6 py-3 shadow-md">
+      <div className="flex gap-6 bg-background-50 rounded-lg px-6 py-3 shadow-md">
         <div className="text-center">
-          <div className="text-2xl font-bold text-cyan-600">{comparisons}</div>
-          <div className="text-sm text-slate-600">Comparisons</div>
+          <div className="text-2xl font-bold text-background-600">
+            {comparisons}
+          </div>
+          <div className="text-sm text-background-600">Comparisons</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-orange-600">{swaps}</div>
-          <div className="text-sm text-slate-600">Swaps</div>
+          <div className="text-2xl font-bold text-background-600">{swaps}</div>
+          <div className="text-sm text-background-600">Swaps</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-purple-600">
+          <div className="text-2xl font-bold text-background-600">
             {currentPass}
           </div>
-          <div className="text-sm text-slate-600">Current Pass</div>
+          <div className="text-sm text-background-600">Current Pass</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-green-600">
+          <div className="text-2xl font-bold text-background-600">
             {sortedElements.size}
           </div>
-          <div className="text-sm text-slate-600">Elements Sorted</div>
+          <div className="text-sm text-background-600">Elements Sorted</div>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg px-4 py-2 shadow-md min-h-[50px] flex items-center justify-center border-l-4 border-cyan-500">
-        <p className="text-slate-700 font-medium text-center">
+      <div className="bg-background-50 rounded-lg px-4 py-2 shadow-md min-h-[50px] flex items-center justify-center ">
+        <p className="text-background-700 font-medium text-center">
           {currentStep || "Click 'Start Sort' to begin visualization"}
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-4 items-center justify-center bg-white p-4 rounded-lg shadow-md">
+      <div className="flex flex-wrap gap-4 items-center justify-center bg-background-50 p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-slate-700">Speed:</label>
+          <label className="text-sm font-medium text-background-700">
+            Speed:
+          </label>
           <select
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
             disabled={isSorting}
-            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-background-500"
           >
-            <option value={1200}>Slow</option>
-            <option value={600}>Medium</option>
-            <option value={300}>Fast</option>
-            <option value={100}>Very Fast</option>
+            <option value={1200} className="bg-background">
+              Slow
+            </option>
+            <option value={600} className="bg-background">
+              Medium
+            </option>
+            <option value={300} className="bg-background">
+              Fast
+            </option>
+            <option value={100} className="bg-background">
+              Very Fast
+            </option>
           </select>
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-background-700">
             Array Size:
           </label>
           {array.length}
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-6 shadow-md w-full">
-        <h3 className="text-lg font-bold text-slate-800 mb-4 text-center">
+      <div className="bg-gradient-to-b from-background-950 to-transparent rounded-xl p-6 shadow-md w-full">
+        <h3 className="text-lg font-bold text-background mb-4 text-center">
           Current Array {isSorting && `(Pass ${currentPass})`}
         </h3>
         <div className="flex gap-2 w-full items-end justify-center overflow-x-auto min-h-[250px] relative">
@@ -295,7 +335,7 @@ export default function SelectionSortVisualizer({
                 key={`${index}-${value}`}
               >
                 <div
-                  className={`rounded-lg flex items-end justify-center text-white font-bold shadow-lg transform transition-all duration-300 border-2 ${getBarBorder(
+                  className={`rounded-lg flex items-end justify-center text-background font-bold shadow-lg transform transition-all duration-300 border-2 ${getBarBorder(
                     index
                   )} hover:scale-105`}
                   style={{
@@ -303,14 +343,14 @@ export default function SelectionSortVisualizer({
                     height: `${getBarHeight(value)}px`,
                     backgroundColor: getBarColor(index, value),
                     boxShadow: isCurrent
-                      ? "0 8px 25px rgba(139, 92, 246, 0.4)"
+                      ? "0 4px 5px background"
                       : isMin
-                      ? "0 8px 25px rgba(239, 68, 68, 0.4)"
+                      ? "0 4px 5px background"
                       : isCompare
-                      ? "0 8px 25px rgba(6, 182, 212, 0.4)"
+                      ? "0 4px 5px background"
                       : isSorted
-                      ? "0 4px 15px rgba(16, 185, 129, 0.4)"
-                      : "0 4px 15px rgba(0,0,0,0.1)",
+                      ? "0 4px 5px background"
+                      : "0 4px 5px background-primary",
                   }}
                 >
                   <div className="pb-2 text-center">
@@ -321,29 +361,31 @@ export default function SelectionSortVisualizer({
                 </div>
 
                 <div className="h-12 mt-2 flex flex-col items-center justify-center">
-                  <div className="text-xs text-slate-600 font-medium mb-1">
+                  <div className="text-xs text-background-600 font-medium mb-1">
                     {index}
                   </div>
                   {currentIndex === index && (
-                    <div className="text-xs text-purple-600 font-bold">
+                    <div className="text-xs text-background-600 font-bold">
                       <div>↑</div>
                       <div>i</div>
                     </div>
                   )}
                   {minIndex === index && (
-                    <div className="text-xs text-red-500 font-bold">
+                    <div className="text-xs text-background-500 font-bold">
                       <div>↑</div>
                       <div>min</div>
                     </div>
                   )}
                   {compareIndex === index && (
-                    <div className="text-xs text-cyan-500 font-bold">
+                    <div className="text-xs text-background-500 font-bold">
                       <div>↑</div>
                       <div>j</div>
                     </div>
                   )}
                   {isSorted && (
-                    <div className="text-xs text-green-600 font-bold">✓</div>
+                    <div className="text-xs text-background-600 font-bold">
+                      ✓
+                    </div>
                   )}
                 </div>
               </div>
@@ -353,8 +395,8 @@ export default function SelectionSortVisualizer({
       </div>
 
       {isSorting && (
-        <div className="bg-white rounded-lg p-4 shadow-md w-full max-w-2xl">
-          <h4 className="font-bold text-slate-800 mb-3 text-center">
+        <div className="bg-background rounded-lg p-4 shadow-md w-full max-w-2xl">
+          <h4 className="font-bold text-background-800 mb-3 text-center">
             Pass Progress
           </h4>
           <div className="flex justify-center gap-2">
@@ -373,7 +415,7 @@ export default function SelectionSortVisualizer({
               </div>
             ))}
           </div>
-          <div className="text-center text-sm text-slate-600 mt-2">
+          <div className="text-center text-sm text-background-600 mt-2">
             {currentPass > 0
               ? `Completed ${currentPass - 1} pass${
                   currentPass - 1 !== 1 ? "es" : ""
@@ -383,75 +425,48 @@ export default function SelectionSortVisualizer({
         </div>
       )}
 
-      <div className="flex flex-wrap gap-4 text-sm bg-white p-3 rounded-lg shadow-md">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-purple-500 rounded"></div>
-          <span>Current Position</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-500 rounded"></div>
-          <span>Minimum Found</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-cyan-500 rounded"></div>
-          <span>Comparing</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-orange-500 rounded"></div>
-          <span>Swapping</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 rounded"></div>
-          <span>Sorted</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-gray-400 rounded"></div>
-          <span>Unsorted</span>
-        </div>
-      </div>
-
       <div className="flex flex-wrap gap-4 mt-4">
-        <button
+        <Button
           onClick={selectionSort}
           disabled={isSorting}
           className={`px-8 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
             isSorting
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 hover:scale-105 active:scale-95 shadow-lg"
-          } text-white`}
+              ? "bg-background-400 cursor-not-allowed"
+              : "hover:scale-105 active:scale-95 shadow-lg"
+          } text-background`}
         >
           {isSorting ? "Sorting..." : "Start Sort"}
-        </button>
+        </Button>
 
-        <button
+        <Button
           onClick={resetArray}
           disabled={isSorting}
-          className={`px-8 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
+          className={`px-8  text-lg rounded-xl font-semibold transition-all duration-200 transform ${
             isSorting
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 hover:scale-105 active:scale-95 shadow-lg"
-          } text-white`}
+              ? "bg-background-400 cursor-not-allowed"
+              : "hover:scale-105 active:scale-95 shadow-lg"
+          } text-background`}
         >
           Reset
-        </button>
+        </Button>
       </div>
 
-      <div className="bg-white rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-slate-800 mb-2">
+      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
+        <h3 className="font-bold text-background-800 mb-2">
           How Selection Sort Works:
         </h3>
-        <p className="text-slate-600 text-sm mb-2">
+        <p className="text-background-600 text-sm mb-2">
           Selection Sort divides the array into sorted and unsorted regions. It
           repeatedly finds the minimum element from the unsorted region and
           places it at the beginning of the unsorted region, effectively growing
           the sorted region.
         </p>
-        <div className="text-slate-600 text-sm">
+        <div className="text-background-600 text-sm">
           <strong>Steps:</strong> 1) Find minimum in unsorted portion • 2) Swap
           with first unsorted element • 3) Move boundary of sorted region • 4)
           Repeat until sorted
         </div>
-        <div className="text-slate-600 text-sm mt-2">
+        <div className="text-background-600 text-sm mt-2">
           <strong>Time Complexity:</strong> Best case O(n²), Average case O(n²),
           Worst case O(n²) • <strong>Space Complexity:</strong> O(1)
         </div>
