@@ -2,7 +2,7 @@
 
 import InboxSection from "@/components/InboxSection";
 import PageToggle from "@/components/PageToggle";
-import ThemeToggle from "@/components/ThemeToggle";
+// import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 
