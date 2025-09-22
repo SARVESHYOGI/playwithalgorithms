@@ -217,37 +217,94 @@ export default function BinarySearchVisualizer({
     return Math.max(minHeight, normalizedValue * maxHeight);
   };
 
-  const getBarColor = (index: number, value: number) => {
-    if (found === index) return "#10b981";
-    if (mid === index) return "#f59e0b";
-    if (left !== null && right !== null && index >= left && index <= right) {
-      return "#3b82f6";
-    }
-    if (left !== null && right !== null && (index < left || index > right)) {
-      return "#9ca3af";
-    }
+  // const getBarColor = (index: number, value: number) => {
+  //   if (found === index) return "#10b981";
+  //   if (mid === index) return "#f59e0b";
+  //   if (left !== null && right !== null && index >= left && index <= right) {
+  //     return "#3b82f6";
+  //   }
+  //   if (left !== null && right !== null && (index < left || index > right)) {
+  //     return "#9ca3af";
+  //   }
 
-    const hue = (value * 2.5 + index * 25) % 360;
-    return `hsl(${hue}, 65%, 55%)`;
+  //   const hue = (value * 2.5 + index * 25) % 360;
+  //   return `hsl(${hue}, 65%, 55%)`;
+  // };
+
+  const getBarColor = (index: number, value: number) => {
+    // const theme = document.documentElement.getAttribute("data-theme");
+
+    const primaryColors = [
+      // "--primary-50",
+      // "--primary-100",
+      // "--primary-200",
+      // "--primary-300",
+      "--primary-400",
+      "--primary-500",
+      "--primary-600",
+      "--primary-700",
+      "--primary-800",
+      // "--primary-900",
+      // "--primary-950",
+    ];
+    const secondaryColors = [
+      // "--secondary-50",
+      // "--secondary-100",
+      // "--secondary-200",
+      // "--secondary-300",
+      "--secondary-400",
+      "--secondary-500",
+      "--secondary-600",
+      "--secondary-700",
+      "--secondary-800",
+      // "--secondary-900",
+      // "--secondary-950",
+    ];
+    const accentColors = [
+      // "--accent-50",
+      // "--accent-100",
+      // "--accent-200",
+      // "--accent-300",
+      "--accent-400",
+      "--accent-500",
+      "--accent-600",
+      "--accent-700",
+      "--accent-800",
+      // "--accent-900",
+      // "--accent-950",
+    ];
+
+    let colorSet = primaryColors;
+
+    if (index % 3 === 1) colorSet = secondaryColors;
+    if (index % 3 === 2) colorSet = accentColors;
+
+    const colorIndex = (value + index) % colorSet.length;
+
+    const colorVariable = colorSet[colorIndex];
+
+    return getComputedStyle(document.documentElement)
+      .getPropertyValue(colorVariable)
+      .trim();
   };
 
   const getBarBorder = (index: number) => {
     if (found === index) {
-      return "ring-4 ring-green-400 scale-110 animate-pulse";
+      return "ring-4 ring-background-400 scale-110 animate-pulse";
     }
     if (mid === index) {
-      return "ring-4 ring-orange-400 scale-110 animate-bounce";
+      return "ring-4 ring-background-400 scale-110 animate-bounce";
     }
     if (left === index) {
-      return "ring-4 ring-blue-400 scale-105";
+      return "ring-4 ring-background-400 scale-105";
     }
     if (right === index) {
-      return "ring-4 ring-blue-400 scale-105";
+      return "ring-4 ring-background-400 scale-105";
     }
     if (left !== null && right !== null && index >= left && index <= right) {
-      return "ring-2 ring-blue-300";
+      return "ring-2 ring-background-300";
     }
-    return "border-white/30";
+    return "border-background/30";
   };
 
   const handleTargetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -256,46 +313,48 @@ export default function BinarySearchVisualizer({
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6 w-full max-w-7xl mx-auto bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl shadow-xl">
+    <div className="flex flex-col items-center gap-6 p-6 w-full max-w-7xl mx-auto bg-gradient-to-br from-background-50 to-background-50 rounded-2xl shadow-xl">
       <div className="text-center">
-        <h2 className="text-4xl font-bold text-slate-800 mb-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-bold text-background-800 mb-2 bg-gradient-to-r from-background-600 to-background-600 bg-clip-text text-transparent">
           Binary Search Visualizer
         </h2>
-        <p className="text-slate-600">
+        <p className="text-background-600">
           Watch how Binary Search efficiently finds elements in sorted arrays by
           repeatedly dividing the search space!
         </p>
       </div>
 
       {/* Statistics */}
-      <div className="flex gap-6 bg-white rounded-lg px-6 py-3 shadow-md">
+      <div className="flex gap-6 bg-background rounded-lg px-6 py-3 shadow-md">
         <div className="text-center">
-          <div className="text-2xl font-bold text-blue-600">{comparisons}</div>
-          <div className="text-sm text-slate-600">Comparisons</div>
+          <div className="text-2xl font-bold text-background-600">
+            {comparisons}
+          </div>
+          <div className="text-sm text-background-600">Comparisons</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-indigo-600">
+          <div className="text-2xl font-bold text-background-600">
             {currentIteration}
           </div>
-          <div className="text-sm text-slate-600">Current Iteration</div>
+          <div className="text-sm text-background-600">Current Iteration</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-orange-600">
+          <div className="text-2xl font-bold text-background-600">
             {target || "None"}
           </div>
-          <div className="text-sm text-slate-600">Target Value</div>
+          <div className="text-sm text-background-600">Target Value</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-green-600">
+          <div className="text-2xl font-bold text-background-600">
             {found !== null ? found : "Not Found"}
           </div>
-          <div className="text-sm text-slate-600">Found at Index</div>
+          <div className="text-sm text-background-600">Found at Index</div>
         </div>
       </div>
 
       {/* Current Step Display */}
-      <div className="bg-white rounded-lg px-4 py-2 shadow-md min-h-[50px] flex items-center justify-center border-l-4 border-blue-500">
-        <p className="text-slate-700 font-medium text-center">
+      <div className="bg-background rounded-lg px-4 py-2 shadow-md min-h-[50px] flex items-center justify-center border-l-4 border-background-500">
+        <p className="text-background-700 font-medium text-center">
           {currentStep ||
             "Enter a target value and click 'Start Search' to begin"}
         </p>
@@ -303,34 +362,38 @@ export default function BinarySearchVisualizer({
 
       {/* Current Comparison */}
       {currentComparison && (
-        <div className="bg-gradient-to-r from-orange-100 to-orange-200 rounded-lg px-4 py-2 shadow-md border border-orange-300">
-          <p className="text-orange-800 font-bold text-center">
+        <div className="bg-gradient-to-r from-background-100 to-background-200 rounded-lg px-4 py-2 shadow-md border border-background-300">
+          <p className="text-background-800 font-bold text-center">
             Current Comparison: {currentComparison}
           </p>
         </div>
       )}
 
       {/* Controls */}
-      <div className="flex flex-wrap gap-4 items-center justify-center bg-white p-4 rounded-lg shadow-md">
+      <div className="flex flex-wrap gap-4 items-center justify-center bg-background p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-slate-700">Target:</label>
+          <label className="text-sm font-medium text-background-700">
+            Target:
+          </label>
           <input
             type="number"
             value={target || ""}
             onChange={handleTargetChange}
             disabled={isSearching}
             placeholder="Enter target"
-            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-24"
+            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-background-500 w-24"
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-slate-700">Speed:</label>
+          <label className="text-sm font-medium text-background-700">
+            Speed:
+          </label>
           <select
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
             disabled={isSearching}
-            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-background-500"
           >
             <option value={1200}>Slow</option>
             <option value={800}>Medium</option>
@@ -340,7 +403,7 @@ export default function BinarySearchVisualizer({
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-background-700">
             Array Size:
           </label>
           <select
@@ -350,7 +413,7 @@ export default function BinarySearchVisualizer({
               if (!isSearching) generateSortedArray();
             }}
             disabled={isSearching}
-            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-background-500"
           >
             <option value={7}>7</option>
             <option value={11}>11</option>
@@ -362,8 +425,8 @@ export default function BinarySearchVisualizer({
       </div>
 
       {/* Array Visualization */}
-      <div className="bg-white rounded-xl p-6 shadow-md w-full">
-        <h3 className="text-lg font-bold text-slate-800 mb-4 text-center">
+      <div className="bg-background rounded-xl p-6 shadow-md w-full">
+        <h3 className="text-lg font-bold text-background-800 mb-4 text-center">
           Sorted Array {isSearching && `(Iteration ${currentIteration})`}
         </h3>
         <div className="flex gap-1 w-full items-end justify-center overflow-x-auto min-h-[220px] relative">
@@ -384,7 +447,7 @@ export default function BinarySearchVisualizer({
                 key={`${index}-${value}`}
               >
                 <div
-                  className={`rounded-lg flex items-end justify-center text-white font-bold shadow-lg transform transition-all duration-500 border-2 ${getBarBorder(
+                  className={`rounded-lg flex items-end justify-center text-background font-bold shadow-lg transform transition-all duration-500 border-2 ${getBarBorder(
                     index
                   )} hover:scale-105`}
                   style={{
@@ -408,29 +471,29 @@ export default function BinarySearchVisualizer({
                 </div>
 
                 <div className="h-16 mt-2 flex flex-col items-center justify-center">
-                  <div className="text-xs text-slate-600 font-medium mb-1">
+                  <div className="text-xs text-background-600 font-medium mb-1">
                     {index}
                   </div>
                   {isLeft && (
-                    <div className="text-xs text-blue-600 font-bold">
+                    <div className="text-xs text-background-600 font-bold">
                       <div>↑</div>
                       <div>L</div>
                     </div>
                   )}
                   {isRight && (
-                    <div className="text-xs text-blue-600 font-bold">
+                    <div className="text-xs text-background-600 font-bold">
                       <div>↑</div>
                       <div>R</div>
                     </div>
                   )}
                   {isMid && (
-                    <div className="text-xs text-orange-600 font-bold">
+                    <div className="text-xs text-background-600 font-bold">
                       <div>↑</div>
                       <div>M</div>
                     </div>
                   )}
                   {isFound && (
-                    <div className="text-xs text-green-600 font-bold">
+                    <div className="text-xs text-background-600 font-bold">
                       <div>✓</div>
                       <div>Found!</div>
                     </div>
@@ -444,8 +507,8 @@ export default function BinarySearchVisualizer({
 
       {/* Search History */}
       {searchHistory.length > 0 && (
-        <div className="bg-white rounded-lg p-4 shadow-md w-full max-w-4xl">
-          <h4 className="font-bold text-slate-800 mb-3 text-center">
+        <div className="bg-background rounded-lg p-4 shadow-md w-full max-w-4xl">
+          <h4 className="font-bold text-background-800 mb-3 text-center">
             Search History
           </h4>
           <div className="overflow-x-auto">
@@ -484,24 +547,6 @@ export default function BinarySearchVisualizer({
       )}
 
       {/* Legend */}
-      <div className="flex flex-wrap gap-4 text-sm bg-white p-3 rounded-lg shadow-md">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-orange-500 rounded"></div>
-          <span>Middle (M)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-blue-500 rounded"></div>
-          <span>Search Range (L-R)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 rounded"></div>
-          <span>Found</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-gray-400 rounded"></div>
-          <span>Eliminated</span>
-        </div>
-      </div>
 
       {/* Action Buttons */}
       <div className="flex flex-wrap gap-4 mt-4">
@@ -510,9 +555,9 @@ export default function BinarySearchVisualizer({
           disabled={isSearching || !target}
           className={`px-8 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
             isSearching || !target
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:scale-105 active:scale-95 shadow-lg"
-          } text-white`}
+              ? "bg-background-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-background-600 to-background-600 hover:from-background-700 hover:to-background-700 hover:scale-105 active:scale-95 shadow-lg"
+          } text-background`}
         >
           {isSearching ? "Searching..." : "Start Search"}
         </button>
@@ -522,9 +567,9 @@ export default function BinarySearchVisualizer({
           disabled={isSearching}
           className={`px-8 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
             isSearching
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 hover:scale-105 active:scale-95 shadow-lg"
-          } text-white`}
+              ? "bg-background-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-background-600 to-background-700 hover:from-background-700 hover:to-background-800 hover:scale-105 active:scale-95 shadow-lg"
+          } text-background`}
         >
           Another Sorted Random Array
         </button>
@@ -534,32 +579,32 @@ export default function BinarySearchVisualizer({
           disabled={isSearching}
           className={`px-8 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
             isSearching
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 hover:scale-105 active:scale-95 shadow-lg"
-          } text-white`}
+              ? "bg-background-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-background-600 to-background-700 hover:from-background-700 hover:to-background-800 hover:scale-105 active:scale-95 shadow-lg"
+          } text-background`}
         >
           Reset
         </button>
       </div>
 
       {/* Algorithm Info */}
-      <div className="bg-white rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-slate-800 mb-2">
+      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
+        <h3 className="font-bold text-background-800 mb-2">
           How Binary Search Works:
         </h3>
-        <p className="text-slate-600 text-sm mb-2">
+        <p className="text-background-600 text-sm mb-2">
           Binary Search is an efficient algorithm for finding an item from a
           sorted list. It works by repeatedly dividing the search interval in
           half. If the value is less than the middle element, it searches the
           left half; otherwise, it searches the right half. This continues until
           the value is found or the interval is empty.
         </p>
-        <div className="text-slate-600 text-sm">
+        <div className="text-background-600 text-sm">
           <strong>Steps:</strong> 1) Find middle element • 2) Compare with
           target • 3) Eliminate half of search space • 4) Repeat until found or
           exhausted
         </div>
-        <div className="text-slate-600 text-sm mt-2">
+        <div className="text-background-600 text-sm mt-2">
           <strong>Time Complexity:</strong> O(log n) •{" "}
           <strong>Space Complexity:</strong> O(1) •{" "}
           <strong>Prerequisite:</strong> Array must be sorted

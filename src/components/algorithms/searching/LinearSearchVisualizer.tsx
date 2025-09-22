@@ -84,8 +84,60 @@ export default function LinearSearchVisualizer({
   };
 
   const getColor = (value: number, index: number) => {
-    const hue = (value * 3.6 + index * 25) % 360;
-    return `hsl(${hue}, 75%, 65%)`;
+    // const theme = document.documentElement.getAttribute("data-theme");
+
+    const primaryColors = [
+      // "--primary-50",
+      // "--primary-100",
+      // "--primary-200",
+      // "--primary-300",
+      "--primary-400",
+      "--primary-500",
+      "--primary-600",
+      "--primary-700",
+      "--primary-800",
+      // "--primary-900",
+      // "--primary-950",
+    ];
+    const secondaryColors = [
+      // "--secondary-50",
+      // "--secondary-100",
+      // "--secondary-200",
+      // "--secondary-300",
+      "--secondary-400",
+      "--secondary-500",
+      "--secondary-600",
+      "--secondary-700",
+      "--secondary-800",
+      // "--secondary-900",
+      // "--secondary-950",
+    ];
+    const accentColors = [
+      // "--accent-50",
+      // "--accent-100",
+      // "--accent-200",
+      // "--accent-300",
+      "--accent-400",
+      "--accent-500",
+      "--accent-600",
+      "--accent-700",
+      "--accent-800",
+      // "--accent-900",
+      // "--accent-950",
+    ];
+
+    let colorSet = primaryColors;
+
+    if (index % 3 === 1) colorSet = secondaryColors;
+    if (index % 3 === 2) colorSet = accentColors;
+
+    const colorIndex = (value + index) % colorSet.length;
+
+    const colorVariable = colorSet[colorIndex];
+
+    return getComputedStyle(document.documentElement)
+      .getPropertyValue(colorVariable)
+      .trim();
   };
 
   const getBarHeight = (value: number) => {
@@ -104,62 +156,68 @@ export default function LinearSearchVisualizer({
   };
 
   const getBarBorder = (index: number, value: number) => {
-    if (foundIndex === index) return "ring-4 ring-green-400 border-green-300";
+    if (foundIndex === index)
+      return "ring-4 ring-background-400 border-background-300";
     if (currentIndex === index)
-      return "ring-4 ring-red-400 border-red-300 animate-pulse";
-    if (value === target) return "ring-2 ring-purple-400 border-purple-300";
-    return "border-white/30";
+      return "ring-4 ring-background-400 border-background-300 animate-pulse";
+    if (value === target)
+      return "ring-2 ring-background-400 border-background-300";
+    return "border-background/30";
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6 w-full max-w-6xl mx-auto bg-gradient-to-br from-slate-50 to-green-50 rounded-2xl shadow-xl">
+    <div className="flex flex-col items-center gap-6 p-6 w-full max-w-6xl mx-auto bg-gradient-to-br from-background-50 to-background-50 rounded-2xl shadow-xl">
       <div className="text-center">
-        <h2 className="text-4xl font-bold text-slate-800 mb-2 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-bold text-background-800 mb-2 bg-gradient-to-r from-background-600 to-background-600 bg-clip-text text-transparent">
           Linear Search Visualizer
         </h2>
-        <p className="text-slate-600">
+        <p className="text-background-600">
           Watch how linear search checks each element one by one!
         </p>
       </div>
 
       {/* Statistics */}
-      <div className="flex gap-6 bg-white rounded-lg px-6 py-3 shadow-md">
+      <div className="flex gap-6 bg-background rounded-lg px-6 py-3 shadow-md">
         <div className="text-center">
-          <div className="text-2xl font-bold text-green-600">{comparisons}</div>
-          <div className="text-sm text-slate-600">Comparisons</div>
+          <div className="text-2xl font-bold text-background-600">
+            {comparisons}
+          </div>
+          <div className="text-sm text-background-600">Comparisons</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-blue-600">{target}</div>
-          <div className="text-sm text-slate-600">Target</div>
+          <div className="text-2xl font-bold text-background-600">{target}</div>
+          <div className="text-sm text-background-600">Target</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-purple-600">
+          <div className="text-2xl font-bold text-background-600">
             {searchResult === "found"
               ? foundIndex
               : searchResult === "not-found"
               ? "N/A"
               : "-"}
           </div>
-          <div className="text-sm text-slate-600">Found At</div>
+          <div className="text-sm text-background-600">Found At</div>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg px-4 py-2 shadow-md min-h-[50px] flex items-center justify-center border-l-4 border-green-500">
-        <p className="text-slate-700 font-medium text-center">
+      <div className="bg-background rounded-lg px-4 py-2 shadow-md min-h-[50px] flex items-center justify-center border-l-4 border-background-500">
+        <p className="text-background-700 font-medium text-center">
           {currentStep ||
             `Ready to search for ${target}. Click 'Start Search' to begin.`}
         </p>
       </div>
 
       {/* Controls */}
-      <div className="flex flex-wrap gap-4 items-center justify-center bg-white p-4 rounded-lg shadow-md">
+      <div className="flex flex-wrap gap-4 items-center justify-center bg-background p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-slate-700">Speed:</label>
+          <label className="text-sm font-medium text-background-700">
+            Speed:
+          </label>
           <select
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
             disabled={isSearching}
-            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="px-3 py-1 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-background-500"
           >
             <option value={1200}>Slow</option>
             <option value={800}>Medium</option>
@@ -169,15 +227,15 @@ export default function LinearSearchVisualizer({
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-background-700">
             Array Size:
           </label>
           {array.length}
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-6 shadow-md w-full">
-        <h3 className="text-lg font-bold text-slate-800 mb-4 text-center">
+      <div className="bg-background rounded-xl p-6 shadow-md w-full">
+        <h3 className="text-lg font-bold text-background-800 mb-4 text-center">
           Array Elements{" "}
           {isSearching &&
             currentIndex !== null &&
@@ -195,7 +253,7 @@ export default function LinearSearchVisualizer({
                 key={`${index}-${value}`}
               >
                 <div
-                  className={`rounded-lg flex items-end justify-center text-white font-bold shadow-lg transform transition-all duration-300 border-2 ${getBarBorder(
+                  className={`rounded-lg flex items-end justify-center text-background font-bold shadow-lg transform transition-all duration-300 border-2 ${getBarBorder(
                     index,
                     value
                   )} hover:scale-105`}
@@ -216,29 +274,29 @@ export default function LinearSearchVisualizer({
                 </div>
 
                 <div className="h-12 mt-2 flex flex-col items-center justify-center">
-                  <div className="text-xs text-slate-600 font-medium mb-1">
+                  <div className="text-xs text-background-600 font-medium mb-1">
                     Index {index}
                   </div>
                   {isCurrent && (
-                    <div className="text-red-600 font-bold animate-bounce">
+                    <div className="text-background-600 font-bold animate-bounce">
                       <div className="text-lg">↑</div>
-                      <div className="text-xs bg-red-600 text-white px-1 rounded">
+                      <div className="text-xs bg-background-600 text-background px-1 rounded">
                         Current
                       </div>
                     </div>
                   )}
                   {isFound && (
-                    <div className="text-green-600 font-bold">
+                    <div className="text-background-600 font-bold">
                       <div className="text-lg">✓</div>
-                      <div className="text-xs bg-green-600 text-white px-1 rounded">
+                      <div className="text-xs bg-background-600 text-background px-1 rounded">
                         Found
                       </div>
                     </div>
                   )}
                   {isTarget && !isCurrent && !isFound && (
-                    <div className="text-purple-600 font-bold">
+                    <div className="text-background-600 font-bold">
                       <div className="text-lg">★</div>
-                      <div className="text-xs bg-purple-600 text-white px-1 rounded">
+                      <div className="text-xs bg-background-600 text-background px-1 rounded">
                         Target
                       </div>
                     </div>
@@ -251,20 +309,20 @@ export default function LinearSearchVisualizer({
       </div>
 
       {isSearching && (
-        <div className="bg-white rounded-lg p-4 shadow-md w-full max-w-2xl">
-          <h4 className="font-bold text-slate-800 mb-2 text-center">
+        <div className="bg-background rounded-lg p-4 shadow-md w-full max-w-2xl">
+          <h4 className="font-bold text-background-800 mb-2 text-center">
             Search Progress
           </h4>
           <div className="flex items-center gap-2">
             <div className="flex-1 bg-gray-200 rounded-full h-2">
               <div
-                className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                className="bg-background-500 h-2 rounded-full transition-all duration-300"
                 style={{
                   width: `${(((currentIndex || 0) + 1) / array.length) * 100}%`,
                 }}
               ></div>
             </div>
-            <span className="text-sm text-slate-600 font-medium">
+            <span className="text-sm text-background-600 font-medium">
               {currentIndex !== null
                 ? `${currentIndex + 1}/${array.length}`
                 : "0/0"}
@@ -273,17 +331,17 @@ export default function LinearSearchVisualizer({
         </div>
       )}
 
-      <div className="flex flex-wrap gap-4 text-sm bg-white p-3 rounded-lg shadow-md">
+      <div className="flex flex-wrap gap-4 text-sm bg-background p-3 rounded-lg shadow-md">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-500 rounded"></div>
+          <div className="w-4 h-4 bg-background-500 rounded"></div>
           <span>Currently Checking</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 rounded"></div>
+          <div className="w-4 h-4 bg-background-500 rounded"></div>
           <span>Found Target</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-purple-500 rounded"></div>
+          <div className="w-4 h-4 bg-background-500 rounded"></div>
           <span>Target Value</span>
         </div>
       </div>
@@ -295,8 +353,8 @@ export default function LinearSearchVisualizer({
           className={`px-8 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
             isSearching
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 hover:scale-105 active:scale-95 shadow-lg"
-          } text-white`}
+              : "bg-gradient-to-r from-background-600 to-background-600 hover:from-background-700 hover:to-background-700 hover:scale-105 active:scale-95 shadow-lg"
+          } text-background`}
         >
           {isSearching ? "Searching..." : "Start Search"}
         </button>
@@ -307,28 +365,28 @@ export default function LinearSearchVisualizer({
           className={`px-8 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
             isSearching
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 hover:scale-105 active:scale-95 shadow-lg"
-          } text-white`}
+              : "bg-gradient-to-r from-background-600 to-background-700 hover:from-background-700 hover:to-background-800 hover:scale-105 active:scale-95 shadow-lg"
+          } text-background`}
         >
           Reset
         </button>
       </div>
 
-      <div className="bg-white rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-slate-800 mb-2">
+      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
+        <h3 className="font-bold text-background-800 mb-2">
           How Linear Search Works:
         </h3>
-        <p className="text-slate-600 text-sm mb-2">
+        <p className="text-background-600 text-sm mb-2">
           Linear search (also called sequential search) checks each element in
           the array one by one from start to finish until it finds the target
           value or reaches the end of the array.
         </p>
-        <div className="text-slate-600 text-sm">
+        <div className="text-background-600 text-sm">
           <strong>Best Case:</strong> O(1) - target is first element •
           <strong> Average Case:</strong> O(n/2) •<strong> Worst Case:</strong>{" "}
           O(n) - target is last or not present
         </div>
-        <p className="text-slate-600 text-sm mt-1">
+        <p className="text-background-600 text-sm mt-1">
           <strong>Space Complexity:</strong> O(1) •<strong> Works on:</strong>{" "}
           Sorted and unsorted arrays •<strong> Simple:</strong> Easy to
           implement and understand

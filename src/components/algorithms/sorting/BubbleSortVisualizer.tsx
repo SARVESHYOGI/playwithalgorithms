@@ -144,11 +144,6 @@ export default function BubbleSortVisualizer({
     setLastSwappedIndices(null);
   };
 
-  const getColor = (value: number, index: number) => {
-    const hue = (value * 3.6 + index * 30) % 360;
-    return `hsl(${hue}, 70%, 60%)`;
-  };
-
   const getBarHeight = (value: number) => {
     const minHeight = 40;
     const maxHeight = 200;

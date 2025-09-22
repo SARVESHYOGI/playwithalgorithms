@@ -1,6 +1,6 @@
 "use client";
 
-import { searchAlgorithms, sortingAlgorithms } from "@/lib/data";
+import { searchAlgorithms } from "@/lib/data";
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -60,7 +60,7 @@ export default function SortingAlgorithmPage({
   }
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-4 flex flex-col items-center relative">
+    <div className="w-full min-h-screen  py-10 px-4 flex flex-col items-center relative">
       <Button
         variant="outline"
         className="absolute top-6 left-6"
@@ -68,14 +68,14 @@ export default function SortingAlgorithmPage({
       >
         ← Go Back
       </Button>
-      <div className="text-4xl font-extrabold text-gray-800 mb-4">
+      <div className="text-4xl font-extrabold text-background-800 mb-4">
         {algorithm.name}
       </div>
-      <p className="text-lg text-gray-600 max-w-3xl text-center mb-8">
+      <p className="text-lg text-background-600 max-w-3xl text-center mb-8">
         {algorithm.description}
       </p>
 
-      <div className="flex flex-col w-full bg-white rounded-lg shadow p-6">
+      <div className="flex flex-col w-full bg-background rounded-lg shadow p-6">
         <div className="flex items-center justify-center gap-4 mb-4">
           <label htmlFor="size" className="font-medium">
             Number of Elements
@@ -125,7 +125,7 @@ export default function SortingAlgorithmPage({
         </div>
         <Button
           onClick={handleVisualize}
-          className="mt-6 w-fit bg-green-600 hover:bg-green-700 mx-auto"
+          className="mt-6 w-fit bg-background-600 hover:bg-background-700 mx-auto"
         >
           Visualize
         </Button>
@@ -145,7 +145,7 @@ export default function SortingAlgorithmPage({
           />
         )}
 
-        {visualize && id !== "linear" && (
+        {visualize && id !== "binary" && id !== "linear" && (
           <div className="text-center text-lg p-8">
             Visualization for {algorithm.name} is not available yet.
           </div>
