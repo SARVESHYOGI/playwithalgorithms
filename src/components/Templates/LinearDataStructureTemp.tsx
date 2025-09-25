@@ -7,10 +7,7 @@ const linearStructures = [
   { id: "queue", name: "Queue" },
   { id: "deque", name: "Deque" },
   { id: "vector", name: "Vector" },
-  { id: "array", name: "Array" },
-  { id: "linked-list", name: "Linked List" },
-  { id: "doubly-linked-list", name: "Doubly Linked List" },
-  { id: "circular-linked-list", name: "Circular Linked List" },
+  { id: "linkedlist", name: "Linked List" },
 ];
 
 function LinearAnimation() {
@@ -248,11 +245,11 @@ export default function LinearDataStructuresTemp() {
           <LinearAnimation />
         </div>
 
-        <div className="col-span-12 row-span-2 m-3 col-start-1 row-start-11 grid grid-cols-8 grid-rows-1 gap-5">
+        <div className="col-span-12 row-span-2 m-3 col-start-1 row-start-11 grid grid-cols-5 grid-rows-1 gap-5">
           {linearStructures.map((link, index) => (
             <Link
               key={link.id}
-              href={`/searching/${link.id}`}
+              href={`/linear-data-structures/${link.id}`}
               className="h-full my-1 bg-accent-300 hover:cursor-pointer"
             >
               <Button

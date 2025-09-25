@@ -6,6 +6,8 @@ import React, { use } from "react";
 import { useRouter } from "next/navigation";
 import QueueVisualizer from "@/components/algorithms/linear/Queue";
 import DequeVisualizer from "@/components/algorithms/linear/Deque";
+import VectorVisualizer from "@/components/algorithms/linear/Vector";
+import LinkedListVisualizer from "@/components/algorithms/linear/LinkedList";
 
 function Linear({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -27,7 +29,8 @@ function Linear({ params }: { params: Promise<{ id: string }> }) {
       {id === "stack" && <Stack />}
       {id === "queue" && <QueueVisualizer />}
       {id === "deque" && <DequeVisualizer />}
-      {id === "vector" && <Stack />}
+      {id === "vector" && <VectorVisualizer />}
+      {id === "linkedlist" && <LinkedListVisualizer />}
     </div>
   );
 }

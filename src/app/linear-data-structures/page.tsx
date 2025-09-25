@@ -11,7 +11,7 @@ const linearStructures = [
   { id: "queue", name: "Queue" },
   { id: "deque", name: "Deque" },
   { id: "vector", name: "Vector" },
-  { id: "linked-list", name: "Linked List" },
+  { id: "linkedlist", name: "Linked List" },
 ];
 
 export default function LinearDataStructuresPage() {
