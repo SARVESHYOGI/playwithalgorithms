@@ -196,9 +196,11 @@ function LinearExploreSection() {
           Understand sequential data organization and efficient access patterns.
         </p>
         <div className="text-center">
-          <button className="px-4 py-2 text-2xl font-bold rounded-xl bg-secondary text-text-950  hover:cursor-pointer hover:bg-secondary/70 dark:text-black">
-            Explore Now! 🚀
-          </button>
+          <Link href="/linear-data-structures">
+            <button className="px-4 py-2 text-2xl font-bold rounded-xl bg-secondary text-text-950  hover:cursor-pointer hover:bg-secondary/70 dark:text-black">
+              Explore Now! 🚀
+            </button>
+          </Link>
         </div>
       </div>
     </div>
