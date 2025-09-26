@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const hashStructures = [
-  { id: "hash-table", name: "Hash Table" },
   { id: "hash-map", name: "Hash Map" },
   { id: "hash-set", name: "Hash Set" },
   { id: "unordered-map", name: "Unordered Map" },
@@ -197,9 +197,11 @@ function HashExploreSection() {
           efficient data retrieval.
         </p>
         <div className="text-center">
-          <Button className="px-6 py-2 text-lg font-bold rounded-lg shadow-md hover:shadow-lg  transition-all duration-300 cursor-pointer  bg-secondary text-text-950  hover:cursor-pointer hover:bg-secondary/70 dark:text-black">
-            Hash It Out! ⚡
-          </Button>
+          <Link href="/hash" className="w-full h-full">
+            <Button className="px-6 py-2 text-lg font-bold rounded-lg shadow-md hover:shadow-lg  transition-all duration-300 cursor-pointer  bg-secondary text-text-950  hover:cursor-pointer hover:bg-secondary/70 dark:text-black">
+              Hash It Out! ⚡
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
@@ -252,12 +254,14 @@ export default function HashDataStructuresTemp() {
         <div className="col-span-5 row-span-4 col-start-8 row-start-5 grid grid-cols-4 grid-rows-4 gap-3">
           {linkData.map((link, index) => (
             <div key={index} className={`flex items-center justify-center`}>
-              <Button
-                className=" transition-colors duration-200 text-text-50 font-medium rounded-lg text-xs shadow-sm hover:shadow-md min-h-12 border-2 border-background-200 cursor-pointer w-full h-full bg-primary hover:cursor-pointer
+              <Link href={`/hash/${link.id}`} className="w-full h-full">
+                <Button
+                  className=" transition-colors duration-200 text-text-50 font-medium rounded-lg text-xs shadow-sm hover:shadow-md min-h-12 border-2 border-background-200 cursor-pointer w-full h-full bg-primary hover:cursor-pointer
               hover:bg-primary/70"
-              >
-                {link.name}
-              </Button>
+                >
+                  {link.name}
+                </Button>
+              </Link>
             </div>
           ))}
         </div>
