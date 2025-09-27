@@ -2,7 +2,6 @@
 
 import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { sortingAlgorithms } from "@/lib/data";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 

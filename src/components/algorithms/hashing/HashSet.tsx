@@ -1,19 +1,16 @@
 import { useState } from "react";
 
-interface HashEntry {
-  key: string;
+interface HashSetEntry {
   value: string;
   hash: number;
   id: string;
 }
 
-export default function HashMapVisualizer() {
-  const [hashMap, setHashMap] = useState<(HashEntry | null)[]>(
+export default function HashSetVisualizer() {
+  const [hashSet, setHashSet] = useState<(HashSetEntry | null)[]>(
     Array(8).fill(null)
   );
-  const [inputKey, setInputKey] = useState<string>("apple");
-  const [inputValue, setInputValue] = useState<string>("background");
-  const [searchKey, setSearchKey] = useState<string>("apple");
+  const [inputValue, setInputValue] = useState<string>("apple");
   const [isAnimating, setIsAnimating] = useState(false);
   const [currentOperation, setCurrentOperation] = useState<string>("");
   const [lastOperation, setLastOperation] = useState<string>("");
@@ -27,49 +24,51 @@ export default function HashMapVisualizer() {
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  const hashFunction = (key: string): number => {
+  const hashFunction = (value: string): number => {
     let hash = 0;
-    for (let i = 0; i < key.length; i++) {
-      hash = (hash + key.charCodeAt(i) * (i + 1)) % tableSize;
+    for (let i = 0; i < value.length; i++) {
+      hash = (hash + value.charCodeAt(i) * (i + 1)) % tableSize;
     }
     return Math.abs(hash);
   };
 
-  const put = async () => {
-    if (!inputKey.trim() || !inputValue.trim() || isAnimating) return;
+  const add = async () => {
+    if (!inputValue.trim() || isAnimating) return;
     if (loadFactor >= 0.75) {
-      setCurrentOperation("Hash table is getting full! Consider resizing.");
+      setCurrentOperation("Hash set is getting full! Consider resizing.");
       setTimeout(() => setCurrentOperation(""), 2000);
       return;
     }
 
     setIsAnimating(true);
-    setOperationType("put");
+    setOperationType("add");
 
-    const hash = hashFunction(inputKey);
+    const hash = hashFunction(inputValue);
     setCurrentOperation(
-      `Computing hash for "${inputKey}": hash("${inputKey}") = ${hash}`
+      `Computing hash for "${inputValue}": hash("${inputValue}") = ${hash}`
     );
     await sleep(speed);
 
     let index = hash;
     let probeCount = 0;
     let hasCollision = false;
+    let alreadyExists = false;
 
     while (probeCount < tableSize) {
       setHighlightedIndex(index);
 
-      if (hashMap[index] === null) {
+      if (hashSet[index] === null) {
         setCurrentOperation(
-          `Empty slot found at index ${index}. Inserting ("${inputKey}", "${inputValue}")`
+          `Empty slot found at index ${index}. Adding "${inputValue}"`
         );
         await sleep(speed);
         break;
-      } else if (hashMap[index]?.key === inputKey) {
+      } else if (hashSet[index]?.value === inputValue) {
+        alreadyExists = true;
         setCurrentOperation(
-          `Key "${inputKey}" already exists at index ${index}. Updating value.`
+          `Value "${inputValue}" already exists at index ${index}. No duplicates allowed in HashSet.`
         );
-        await sleep(speed);
+        await sleep(speed * 2);
         break;
       } else {
         hasCollision = true;
@@ -83,108 +82,56 @@ export default function HashMapVisualizer() {
     }
 
     if (probeCount >= tableSize) {
-      setCurrentOperation("Hash table is full!");
+      setCurrentOperation("Hash set is full!");
       setHighlightedIndex(null);
       setIsAnimating(false);
       return;
     }
 
-    const newHashMap = [...hashMap];
-    const newEntry: HashEntry = {
-      key: inputKey,
-      value: inputValue,
-      hash: hash,
-      id: `entry-${Date.now()}`,
-    };
+    if (!alreadyExists) {
+      const newHashSet = [...hashSet];
+      const newEntry: HashSetEntry = {
+        value: inputValue,
+        hash: hash,
+        id: `entry-${Date.now()}`,
+      };
 
-    newHashMap[index] = newEntry;
-    setHashMap(newHashMap);
+      newHashSet[index] = newEntry;
+      setHashSet(newHashSet);
 
-    if (hasCollision) {
-      setCollisionCount((prev) => prev + 1);
+      if (hasCollision) {
+        setCollisionCount((prev) => prev + 1);
+      }
+
+      const newLoadFactor =
+        newHashSet.filter((entry) => entry !== null).length / tableSize;
+      setLoadFactor(newLoadFactor);
+
+      setLastOperation(
+        `Added "${inputValue}" to set at index ${index}${
+          hasCollision ? " after collision" : ""
+        }`
+      );
+    } else {
+      setLastOperation(`"${inputValue}" already exists in set - not added`);
     }
 
-    const newLoadFactor =
-      newHashMap.filter((entry) => entry !== null).length / tableSize;
-    setLoadFactor(newLoadFactor);
-
-    setLastOperation(
-      `Inserted ("${inputKey}", "${inputValue}") at index ${index}${
-        hasCollision ? " after collision" : ""
-      }`
-    );
     setCurrentOperation("");
     setHighlightedIndex(null);
     setOperationType(null);
-    setInputKey("");
     setInputValue("");
     setIsAnimating(false);
   };
 
-  const get = async () => {
-    if (!searchKey.trim() || isAnimating) return;
+  const contains = async () => {
+    if (!inputValue.trim() || isAnimating) return;
 
     setIsAnimating(true);
-    setOperationType("get");
+    setOperationType("contains");
 
-    const hash = hashFunction(searchKey);
+    const hash = hashFunction(inputValue);
     setCurrentOperation(
-      `Searching for "${searchKey}": hash("${searchKey}") = ${hash}`
-    );
-    await sleep(speed);
-
-    let index = hash;
-    let probeCount = 0;
-
-    while (probeCount < tableSize) {
-      setHighlightedIndex(index);
-
-      if (hashMap[index] === null) {
-        setCurrentOperation(
-          `Empty slot at index ${index}. Key "${searchKey}" not found.`
-        );
-        await sleep(speed);
-        break;
-      } else if (hashMap[index]?.key === searchKey) {
-        setCurrentOperation(
-          `Found "${searchKey}" at index ${index}! Value: "${hashMap[index]?.value}"`
-        );
-        await sleep(speed * 2);
-        break;
-      } else {
-        setCurrentOperation(
-          `Key mismatch at index ${index}. Probing next slot...`
-        );
-        await sleep(speed / 2);
-        index = (index + 1) % tableSize;
-        probeCount++;
-      }
-    }
-
-    if (probeCount >= tableSize) {
-      setCurrentOperation(
-        `Key "${searchKey}" not found after checking all slots.`
-      );
-    }
-
-    setLastOperation(`Search for "${searchKey}" completed`);
-    setTimeout(() => {
-      setCurrentOperation("");
-      setHighlightedIndex(null);
-    }, 2000);
-    setOperationType(null);
-    setIsAnimating(false);
-  };
-
-  const remove = async () => {
-    if (!searchKey.trim() || isAnimating) return;
-
-    setIsAnimating(true);
-    setOperationType("remove");
-
-    const hash = hashFunction(searchKey);
-    setCurrentOperation(
-      `Removing "${searchKey}": hash("${searchKey}") = ${hash}`
+      `Checking if "${inputValue}" exists: hash("${inputValue}") = ${hash}`
     );
     await sleep(speed);
 
@@ -195,31 +142,90 @@ export default function HashMapVisualizer() {
     while (probeCount < tableSize) {
       setHighlightedIndex(index);
 
-      if (hashMap[index] === null) {
+      if (hashSet[index] === null) {
         setCurrentOperation(
-          `Empty slot at index ${index}. Key "${searchKey}" not found.`
+          `Empty slot at index ${index}. Value "${inputValue}" is not in the set.`
         );
         await sleep(speed);
         break;
-      } else if (hashMap[index]?.key === searchKey) {
+      } else if (hashSet[index]?.value === inputValue) {
+        found = true;
         setCurrentOperation(
-          `Found "${searchKey}" at index ${index}. Removing...`
+          `Found "${inputValue}" at index ${index}! Value exists in set.`
+        );
+        await sleep(speed * 2);
+        break;
+      } else {
+        setCurrentOperation(
+          `Different value at index ${index}. Probing next slot...`
+        );
+        await sleep(speed / 2);
+        index = (index + 1) % tableSize;
+        probeCount++;
+      }
+    }
+
+    if (probeCount >= tableSize && !found) {
+      setCurrentOperation(
+        `Value "${inputValue}" not found after checking all slots.`
+      );
+    }
+
+    setLastOperation(
+      `"${inputValue}" ${found ? "exists" : "does not exist"} in set`
+    );
+    setTimeout(() => {
+      setCurrentOperation("");
+      setHighlightedIndex(null);
+    }, 2000);
+    setOperationType(null);
+    setIsAnimating(false);
+  };
+
+  const remove = async () => {
+    if (!inputValue.trim() || isAnimating) return;
+
+    setIsAnimating(true);
+    setOperationType("remove");
+
+    const hash = hashFunction(inputValue);
+    setCurrentOperation(
+      `Removing "${inputValue}": hash("${inputValue}") = ${hash}`
+    );
+    await sleep(speed);
+
+    let index = hash;
+    let probeCount = 0;
+    let found = false;
+
+    while (probeCount < tableSize) {
+      setHighlightedIndex(index);
+
+      if (hashSet[index] === null) {
+        setCurrentOperation(
+          `Empty slot at index ${index}. Value "${inputValue}" not found.`
+        );
+        await sleep(speed);
+        break;
+      } else if (hashSet[index]?.value === inputValue) {
+        setCurrentOperation(
+          `Found "${inputValue}" at index ${index}. Removing...`
         );
         found = true;
         await sleep(speed);
 
-        const newHashMap = [...hashMap];
-        newHashMap[index] = null;
-        setHashMap(newHashMap);
+        const newHashSet = [...hashSet];
+        newHashSet[index] = null;
+        setHashSet(newHashSet);
 
         const newLoadFactor =
-          newHashMap.filter((entry) => entry !== null).length / tableSize;
+          newHashSet.filter((entry) => entry !== null).length / tableSize;
         setLoadFactor(newLoadFactor);
 
         break;
       } else {
         setCurrentOperation(
-          `Key mismatch at index ${index}. Probing next slot...`
+          `Different value at index ${index}. Probing next slot...`
         );
         await sleep(speed / 2);
         index = (index + 1) % tableSize;
@@ -228,11 +234,11 @@ export default function HashMapVisualizer() {
     }
 
     if (!found && probeCount >= tableSize) {
-      setCurrentOperation(`Key "${searchKey}" not found.`);
+      setCurrentOperation(`Value "${inputValue}" not found.`);
     }
 
     setLastOperation(
-      found ? `Removed "${searchKey}"` : `Key "${searchKey}" not found`
+      found ? `Removed "${inputValue}"` : `Value "${inputValue}" not found`
     );
     setTimeout(() => {
       setCurrentOperation("");
@@ -244,10 +250,10 @@ export default function HashMapVisualizer() {
 
   const clear = () => {
     if (isAnimating) return;
-    setHashMap(Array(tableSize).fill(null));
+    setHashSet(Array(tableSize).fill(null));
     setLoadFactor(0);
     setCollisionCount(0);
-    setLastOperation("HashMap cleabackground");
+    setLastOperation("HashSet cleabackground");
     setCurrentOperation("");
   };
 
@@ -255,43 +261,49 @@ export default function HashMapVisualizer() {
     if (isAnimating) return;
     const newSize = tableSize === 8 ? 16 : 8;
     setTableSize(newSize);
-    setHashMap(Array(newSize).fill(null));
+    setHashSet(Array(newSize).fill(null));
     setLoadFactor(0);
     setCollisionCount(0);
-    setLastOperation(`Resized hash table to ${newSize} slots`);
+    setLastOperation(`Resized hash set to ${newSize} slots`);
   };
 
   const getSlotColor = (index: number) => {
     if (highlightedIndex === index) {
-      if (operationType === "put") return "primary";
-      if (operationType === "get") return "secondary";
+      if (operationType === "add") return "primary";
+      if (operationType === "contains") return "secondary";
       if (operationType === "remove") return "accent";
     }
 
-    const entry = hashMap[index];
-    if (entry === null) return "background-50";
+    const entry = hashSet[index];
+    if (entry === null) return "background";
 
-    const idealIndex = hashFunction(entry.key);
+    const idealIndex = hashFunction(entry.value);
     if (index === idealIndex) {
-      return "primary-200";
+      return "#e0e7ff";
     } else {
-      return "background-200";
+      return "#fecaca";
     }
   };
 
   const getBorderColor = (index: number) => {
-    if (highlightedIndex === index) return "#fbbf24";
-    return "#e2e8f0";
+    if (highlightedIndex === index) return "secondary";
+    return "#8a8f06";
+  };
+
+  const getUniqueValues = (): string[] => {
+    return hashSet
+      .filter((entry) => entry !== null)
+      .map((entry) => entry!.value);
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 p-6 w-full mx-auto bg-gradient-to-br from-background-50 to-background-50 rounded-2xl shadow-xl">
+    <div className="flex flex-col items-center gap-6 p-6 w-full  mx-auto bg-gradient-to-br from-background-50 to-background-50 rounded-2xl shadow-xl">
       <div className="text-center">
         <h2 className="text-4xl font-bold text-background-800 mb-2 bg-gradient-to-r from-background-600 to-background-600 bg-clip-text text-transparent">
-          HashMap Visualizer
+          HashSet Visualizer
         </h2>
         <p className="text-background-600">
-          Hash table with linear probing collision resolution
+          Set data structure with no duplicate values allowed
         </p>
       </div>
 
@@ -304,9 +316,9 @@ export default function HashMapVisualizer() {
         </div>
         <div className="text-center">
           <div className="text-2xl font-bold text-background-600">
-            {hashMap.filter((entry) => entry !== null).length}
+            {hashSet.filter((entry) => entry !== null).length}
           </div>
-          <div className="text-sm text-background-600">Entries</div>
+          <div className="text-sm text-background-600">Elements</div>
         </div>
         <div className="text-center">
           <div className="text-2xl font-bold text-background-600">
@@ -324,25 +336,11 @@ export default function HashMapVisualizer() {
 
       <div className="bg-background rounded-lg px-4 py-2 shadow-md min-h-[50px] flex items-center justify-center border-l-4 border-background-500">
         <p className="text-background-700 font-medium text-center">
-          {currentOperation || lastOperation || "Ready for HashMap operations"}
+          {currentOperation || lastOperation || "Ready for HashSet operations"}
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-background p-4 rounded-lg shadow-md w-full max-w-4xl">
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-background-700">
-            Key:
-          </label>
-          <input
-            type="text"
-            value={inputKey}
-            onChange={(e) => setInputKey(e.target.value)}
-            disabled={isAnimating}
-            placeholder="apple"
-            className="px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-background-500"
-          />
-        </div>
-
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 bg-background p-4 rounded-lg shadow-md">
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium text-background-700">
             Value:
@@ -351,20 +349,6 @@ export default function HashMapVisualizer() {
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            disabled={isAnimating}
-            placeholder="background"
-            className="px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-background-500"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-background-700">
-            Search Key:
-          </label>
-          <input
-            type="text"
-            value={searchKey}
-            onChange={(e) => setSearchKey(e.target.value)}
             disabled={isAnimating}
             placeholder="apple"
             className="px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-background-500"
@@ -386,6 +370,41 @@ export default function HashMapVisualizer() {
             <option value={600}>Fast</option>
           </select>
         </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-background-700">
+            Unique Count:
+          </label>
+          <div className="px-3 py-2 bg-background-100 rounded-md text-sm text-background-600">
+            {getUniqueValues().length} unique values
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-background rounded-xl p-4 shadow-md w-full max-w-3xl">
+        <h4 className="font-bold text-background-800 mb-2 text-center">
+          Current Set Contents
+        </h4>
+        <div className="flex flex-wrap gap-2 justify-center min-h-[60px] items-center">
+          {getUniqueValues().length === 0 ? (
+            <div className="text-background-400 italic">Set is empty</div>
+          ) : (
+            <>
+              <span className="text-background-600">{"{"}</span>
+              {getUniqueValues().map((value, index) => (
+                <span key={value}>
+                  <span className="bg-background-100 text-background-800 px-2 py-1 rounded font-mono text-sm">
+                    &quot;{value}&quot;
+                  </span>
+                  {index < getUniqueValues().length - 1 && (
+                    <span className="text-background-600 mx-1">,</span>
+                  )}
+                </span>
+              ))}
+              <span className="text-background-600">{"}"}</span>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="bg-background rounded-xl p-4 shadow-md w-full max-w-2xl">
@@ -393,7 +412,7 @@ export default function HashMapVisualizer() {
           Hash Function
         </h4>
         <div className="text-center font-mono text-sm bg-background-100 p-3 rounded">
-          hash(key) = (Σ key[i] × (i+1)) % {tableSize}
+          hash(value) = (Σ value[i] × (i+1)) % {tableSize}
         </div>
         <div className="text-xs text-background-500 text-center mt-2">
           Simple hash function for demonstration purposes
@@ -406,10 +425,10 @@ export default function HashMapVisualizer() {
         </h3>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {hashMap.map((entry, index) => (
+          {hashSet.map((entry, index) => (
             <div
               key={index}
-              className={`border-2 bg-background rounded-lg p-4 min-h-[120px] transition-all duration-300 ${
+              className={`border-2 rounded-lg p-4 min-h-[100px] transition-all duration-300 ${
                 highlightedIndex === index ? "scale-105 shadow-lg" : ""
               }`}
               style={{
@@ -428,11 +447,8 @@ export default function HashMapVisualizer() {
               ) : (
                 <div className="space-y-2">
                   <div className="text-sm">
-                    <div className="font-bold text-background-800">
-                      Key: {entry.key}
-                    </div>
-                    <div className="text-background-600">
-                      Value: {entry.value}
+                    <div className="font-bold text-background-800 break-all">
+                      &quot;{entry.value}&quot;
                     </div>
                   </div>
                   <div className="text-xs text-background-500 pt-2 border-t">
@@ -467,6 +483,24 @@ export default function HashMapVisualizer() {
         </div>
       </div>
 
+      <div className="bg-background-50 border border-background-200 rounded-lg p-4 w-full max-w-3xl">
+        <div className="flex items-center gap-2 text-background-800">
+          <div className="text-lg">ℹ️</div>
+          <div>
+            <div className="font-bold">Set Properties</div>
+            <div className="text-sm">
+              • No duplicate values allowed - attempting to add existing values
+              will be ignobackground
+              <br />
+              • Unordebackground collection - elements dont maintain insertion
+              order
+              <br />• Fast membership testing - O(1) average time to check if
+              element exists
+            </div>
+          </div>
+        </div>
+      </div>
+
       {loadFactor > 0.7 && (
         <div className="bg-background-50 border border-background-200 rounded-lg p-4 w-full max-w-2xl">
           <div className="flex items-center gap-2 text-background-800">
@@ -484,34 +518,34 @@ export default function HashMapVisualizer() {
 
       <div className="flex flex-wrap gap-4 justify-center">
         <button
-          onClick={put}
-          disabled={isAnimating || !inputKey.trim() || !inputValue.trim()}
+          onClick={add}
+          disabled={isAnimating || !inputValue.trim()}
           className={`px-6 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
-            isAnimating || !inputKey.trim() || !inputValue.trim()
+            isAnimating || !inputValue.trim()
               ? "bg-background-400 cursor-not-allowed"
               : "bg-gradient-to-r from-background-600 to-background-700 hover:from-background-700 hover:to-background-800 hover:scale-105 active:scale-95 shadow-lg"
           } text-background`}
         >
-          Put
+          Add
         </button>
 
         <button
-          onClick={get}
-          disabled={isAnimating || !searchKey.trim()}
+          onClick={contains}
+          disabled={isAnimating || !inputValue.trim()}
           className={`px-6 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
-            isAnimating || !searchKey.trim()
+            isAnimating || !inputValue.trim()
               ? "bg-background-400 cursor-not-allowed"
               : "bg-gradient-to-r from-background-600 to-background-700 hover:from-background-700 hover:to-background-800 hover:scale-105 active:scale-95 shadow-lg"
           } text-background`}
         >
-          Get
+          Contains
         </button>
 
         <button
           onClick={remove}
-          disabled={isAnimating || !searchKey.trim()}
+          disabled={isAnimating || !inputValue.trim()}
           className={`px-6 py-3 text-lg rounded-xl font-semibold transition-all duration-200 transform ${
-            isAnimating || !searchKey.trim()
+            isAnimating || !inputValue.trim()
               ? "bg-background-400 cursor-not-allowed"
               : "bg-gradient-to-r from-background-600 to-background-700 hover:from-background-700 hover:to-background-800 hover:scale-105 active:scale-95 shadow-lg"
           } text-background`}
@@ -546,7 +580,7 @@ export default function HashMapVisualizer() {
 
       <div className="bg-background rounded-lg p-4 shadow-md max-w-5xl">
         <h3 className="font-bold text-background-800 mb-3">
-          HashMap Operations:
+          HashSet Operations:
         </h3>
         <div className="grid md:grid-cols-2 gap-4 text-sm">
           <div>
@@ -555,29 +589,20 @@ export default function HashMapVisualizer() {
             </h4>
             <ul className="space-y-1 text-background-600">
               <li>
-                <strong>Put(key, value):</strong> Insert or update key-value
-                pair
+                <strong>add(value):</strong> Insert value into set (ignores
+                duplicates)
               </li>
               <li>
-                <strong>Get(key):</strong> Retrieve value for given key
+                <strong>contains(value):</strong> Check if value exists in set
               </li>
               <li>
-                <strong>Remove(key):</strong> Delete key-value pair
+                <strong>remove(value):</strong> Delete value from set
               </li>
               <li>
-                <strong>containsKey(key):</strong> Check if key exists
-              </li>
-            </ul>
-
-            <h4 className="font-semibold text-background-700 mb-2 mt-3">
-              Collision Resolution:
-            </h4>
-            <ul className="space-y-1 text-background-600">
-              <li>
-                <strong>Linear Probing:</strong> Check next slot sequentially
+                <strong>size():</strong> Get number of elements in set
               </li>
               <li>
-                <strong>Load Factor:</strong> Ratio of entries to table size
+                <strong>isEmpty():</strong> Check if set is empty
               </li>
             </ul>
           </div>
@@ -587,31 +612,30 @@ export default function HashMapVisualizer() {
             </h4>
             <ul className="space-y-1 text-background-600">
               <li>
-                <strong>Average Time:</strong> O(1) for all operations
+                <strong>No Duplicates:</strong> Each element appears at most
+                once
+              </li>
+              <li>
+                <strong>Average Time:</strong> O(1) for add, contains, remove
               </li>
               <li>
                 <strong>Worst Case:</strong> O(n) when many collisions occur
               </li>
               <li>
-                <strong>Space Complexity:</strong> O(n) where n is number of
-                entries
+                <strong>Space:</strong> O(n) where n is number of unique
+                elements
               </li>
               <li>
-                <strong>Load Factor:</strong> Keep below 0.75 for good
-                performance
-              </li>
-              <li>
-                <strong>Use Cases:</strong> Caches, databases, symbol tables,
-                associative arrays
+                <strong>Use Cases:</strong> Removing duplicates, membership
+                testing, mathematical set operations
               </li>
             </ul>
           </div>
         </div>
         <div className="mt-4 p-3 bg-background-50 rounded-lg text-sm">
-          <strong>Key Insight:</strong> Hash functions distribute keys across
-          table slots. Good hash functions minimize collisions, but collision
-          resolution strategies like linear probing handle conflicts when they
-          occur.
+          <strong>vs HashMap:</strong> HashSet only stores values (no key-value
+          pairs) and automatically prevents duplicates. Its essentially a
+          HashMap where the value is also used as the key.
         </div>
       </div>
     </div>

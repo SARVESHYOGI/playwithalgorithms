@@ -17,7 +17,7 @@ export default function QuickSortVisualizer({
   );
   const [currentStep, setCurrentStep] = useState<string>("");
   const [speed, setSpeed] = useState(600);
-  const [arraySize, setArraySize] = useState(7);
+  const [arraySize, _setArraySize] = useState(7);
   const [swaps, setSwaps] = useState(0);
   const [comparisons, setComparisons] = useState(0);
 
@@ -111,17 +111,6 @@ export default function QuickSortVisualizer({
     setPointerJ(null);
 
     return i + 1;
-  };
-
-  const generateRandomArray = () => {
-    if (isSorting) return;
-    const newArray = Array.from(
-      { length: arraySize },
-      () => Math.floor(Math.random() * 99) + 1
-    );
-    setArray(newArray);
-    setCurrentStep("");
-    resetCounters();
   };
 
   const resetArray = () => {

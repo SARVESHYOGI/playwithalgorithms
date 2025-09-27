@@ -13,7 +13,7 @@ export default function LinearSearchVisualizer({
   const [isSearching, setIsSearching] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [foundIndex, setFoundIndex] = useState<number | null>(null);
-  const [target, setTarget] = useState<number>(tar);
+  const [target, _setTarget] = useState<number>(tar);
   const [currentStep, setCurrentStep] = useState<string>("");
   const [speed, setSpeed] = useState(800);
   const [comparisons, setComparisons] = useState(0);

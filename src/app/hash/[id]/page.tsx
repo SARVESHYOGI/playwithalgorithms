@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import React, { use } from "react";
 import { useRouter } from "next/navigation";
 import HashMapVisualizer from "@/components/algorithms/hashing/HashMap";
+import HashSetVisualizer from "@/components/algorithms/hashing/HashSet";
+import UnorderedMapVisualizer from "@/components/algorithms/hashing/UnorderedMap";
+import UnorderedSetVisualizer from "@/components/algorithms/hashing/UnorderedSet";
 
 function HashStructures({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -23,13 +26,9 @@ function HashStructures({ params }: { params: Promise<{ id: string }> }) {
       </div>
       {/* </div> */}
       {id === "hash-map" && <HashMapVisualizer />}
-      {id === "hash-set" && <div>Hash Set Visualizer Coming Soon!</div>}
-      {id === "unordered-map" && (
-        <div>Unordered Map Visualizer Coming Soon!</div>
-      )}
-      {id === "unordered-set" && (
-        <div>Unordered Set Visualizer Coming Soon!</div>
-      )}
+      {id === "hash-set" && <HashSetVisualizer />}
+      {id === "unordered-map" && <UnorderedMapVisualizer />}
+      {id === "unordered-set" && <UnorderedSetVisualizer />}
     </div>
   );
 }

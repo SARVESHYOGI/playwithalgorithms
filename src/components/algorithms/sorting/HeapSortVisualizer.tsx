@@ -240,8 +240,6 @@ export default function HeapSortVisualizer({
     const pos = getTreePosition(index, level, positionInLevel);
     const isActive = currentNode === index;
     const isComparing = comparingNodes.includes(index);
-    const isSorted = sortedPortion.includes(index);
-    const isOutOfHeap = heapSize !== null && index >= heapSize;
 
     return (
       <g key={index}>

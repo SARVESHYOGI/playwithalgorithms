@@ -18,10 +18,6 @@ export default function BubbleSortVisualizer({
   const [pointerI, setPointerI] = useState<number | null>(null);
   const [pointerJ, setPointerJ] = useState<number | null>(null);
   const [sortedElements, setSortedElements] = useState<Set<number>>(new Set());
-  const [isSwapping, setIsSwapping] = useState(false);
-  const [lastSwappedIndices, setLastSwappedIndices] = useState<
-    [number, number] | null
-  >(null);
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -69,8 +65,6 @@ export default function BubbleSortVisualizer({
         await sleep(speed);
 
         if (arr[j] > arr[j + 1]) {
-          setIsSwapping(true);
-          setLastSwappedIndices([j, j + 1]);
           setCurrentStep(
             `Pass ${i + 1}: Swapping ${arr[j]} and ${arr[j + 1]} (${arr[j]} > ${
               arr[j + 1]
@@ -84,8 +78,6 @@ export default function BubbleSortVisualizer({
           swapped = true;
 
           await sleep(speed);
-          setIsSwapping(false);
-          setLastSwappedIndices(null);
         } else {
           setCurrentStep(
             `Pass ${i + 1}: No swap needed (${arr[j]} ≤ ${arr[j + 1]})`
@@ -140,8 +132,6 @@ export default function BubbleSortVisualizer({
     setPointerI(null);
     setPointerJ(null);
     setSortedElements(new Set());
-    setIsSwapping(false);
-    setLastSwappedIndices(null);
   };
 
   const getBarHeight = (value: number) => {
