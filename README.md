@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎯 PlayWithAlgorithms
 
-## Getting Started
+An interactive **algorithm visualization platform** built with **Next.js, TypeScript, and Shadcn UI**.  
+It helps learners understand complex **searching, sorting, and data structures** through **step-by-step visualizations and animations**.
 
-First, run the development server:
+![License](https://img.shields.io/badge/license-MIT-blue.svg) 
+![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js) 
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript) 
+![Shadcn](https://img.shields.io/badge/UI-Shadcn-green)
+
+---
+
+## 🚀 Live Demo
+👉 [PlayWithAlgorithms on Vercel](https://playwithalgorithms.vercel.app)
+
+---
+
+## 📌 Features
+- **Searching Algorithms**: Binary Search, Linear Search  
+- **Sorting Algorithms**: Merge, Quick, Bubble, Counting, Radix, Heap, Selection, Insertion  
+- **Linear Data Structures**: Stack, Queue, Deque, Linked List, Vector  
+- **Hash-Based Structures**: HashMap, HashSet, UnorderedMap, UnorderedSet  
+- **Non-Linear Structures**: Binary Tree, Binary Search Tree (BST)  
+- **Step-by-Step Animations**: Visualize how algorithms and data structures work internally  
+- **Modern UI**: Responsive, clean, and interactive design with Shadcn UI  
+
+---
+
+## 🛠️ Tech Stack
+- **Frontend**: Next.js, TypeScript, Shadcn UI  
+- **Styling**: Tailwind CSS  
+- **Deployment**: Vercel  
+
+---
+
+## 📷 Screenshots
+Example:  
+![Demo Screenshot](./screenshots/demo.png)
+
+![Demo Screenshot](./screenshots/demo.png)
+
+![Demo Screenshot](./screenshots/demo.png)
+
+---
+
+## 🏗️ Installation & Setup
+Clone the repository and run it locally:
 
 ```bash
+# Clone the repo
+git clone https://github.com/SARVESHYOGI/playwithalgorithms.git
+
+# Navigate to project directory
+cd playwithalgorithms
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
