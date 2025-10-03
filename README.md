@@ -35,11 +35,14 @@ It helps learners understand complex **searching, sorting, and data structures**
 
 ## 📷 Screenshots
 Example:  
-![Demo Screenshot](./screenshots/demo.png)
+![Demo Screenshot](./screenshots/homepage.png)
 
-![Demo Screenshot](./screenshots/demo.png)
+![Demo Screenshot](./screenshots/inbox.png)
 
-![Demo Screenshot](./screenshots/demo.png)
+![Demo Screenshot](./screenshots/linearserchmain.png)
+
+![Demo Screenshot](./screenshots/linearserch.png)
+
 
 ---
 
