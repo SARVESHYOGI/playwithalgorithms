@@ -11,8 +11,8 @@ const InboxSection = forwardRef<HTMLDivElement>((_, ref) => {
   const SortingRef = useRef<HTMLDivElement>(null);
   const SearchingRef = useRef<HTMLDivElement>(null);
   const LinearDataStructureRef = useRef<HTMLDivElement>(null);
-  const HashDataStructureRef = useRef<HTMLDivElement>(null);
-  const NonLinearDataStructureRef = useRef<HTMLDivElement>(null);
+  // const HashDataStructureRef = useRef<HTMLDivElement>(null);
+  // const NonLinearDataStructureRef = useRef<HTMLDivElement>(null);
   const scrollToSorting = () => {
     SortingRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -22,12 +22,12 @@ const InboxSection = forwardRef<HTMLDivElement>((_, ref) => {
   const scrollToLinearDataStructure = () => {
     LinearDataStructureRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  const scrollToHashDataStructure = () => {
-    HashDataStructureRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-  const scrollToNonLinearDataStructure = () => {
-    NonLinearDataStructureRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  // const scrollToHashDataStructure = () => {
+  //   HashDataStructureRef.current?.scrollIntoView({ behavior: "smooth" });
+  // };
+  // const scrollToNonLinearDataStructure = () => {
+  //   NonLinearDataStructureRef.current?.scrollIntoView({ behavior: "smooth" });
+  // };
   return (
     <>
       <div
@@ -37,35 +37,35 @@ const InboxSection = forwardRef<HTMLDivElement>((_, ref) => {
         <div className="flex flex-col flex-grow">
           <ul className="flex flex-col flex-grow justify-evenly">
             <li
-              className="p-4 shadow-sm bg-background"
+              className="p-4 shadow-sm bg-background hover:cursor-pointer"
               onClick={scrollToSorting}
             >
               Sorting
             </li>
             <li
-              className="p-4 shadow-sm bg-background"
+              className="p-4 shadow-sm bg-background hover:cursor-pointer"
               onClick={scrollToSearching}
             >
               Searching
             </li>
             <li
-              className="p-4 shadow-sm bg-background"
+              className="p-4 shadow-sm bg-background hover:cursor-pointer"
               onClick={scrollToLinearDataStructure}
             >
               Linear Data Structure
             </li>
-            <li
-              className="p-4 shadow-sm bg-background"
+            {/* <li
+              className="p-4 shadow-sm bg-background hover:cursor-pointer"
               onClick={scrollToHashDataStructure}
             >
               Hash Data Structure
             </li>
             <li
-              className="p-4 shadow-sm bg-background"
+              className="p-4 shadow-sm bg-background hover:cursor-pointer"
               onClick={scrollToNonLinearDataStructure}
             >
               Non-Linear Data Structure
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
@@ -74,8 +74,8 @@ const InboxSection = forwardRef<HTMLDivElement>((_, ref) => {
         <Sorting ref={SortingRef} />
         <Searching ref={SearchingRef} />
         <LinearDataStructure ref={LinearDataStructureRef} />
-        <HashDataStructure ref={HashDataStructureRef} />
-        <NonLinearDataStructure ref={NonLinearDataStructureRef} />
+        {/* <HashDataStructure ref={HashDataStructureRef} />
+        <NonLinearDataStructure ref={NonLinearDataStructureRef} /> */}
       </div>
     </>
   );

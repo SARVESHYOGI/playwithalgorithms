@@ -140,7 +140,7 @@ function NonLinearAnimation() {
         </p>
       </div>
 
-      <div className="flex-grow flex items-center justify-center bg-gradient-to-b from-background-950 to-transparent rounded-lg p-4 min-h-[180px]">
+      <div className="flex-grow flex items-center justify-center bg-gradient-to-b from-background-300 to-transparent rounded-lg p-4 min-h-[180px]">
         <div className="flex flex-col items-center w-full h-full relative">
           <div className="text-sm font-bold text-primary-50 mb-2 flex items-center gap-2">
             🌳 BINARY TREE

@@ -303,7 +303,7 @@ export default function BubbleSortVisualizer({
         </div>
       </div>
 
-      <div className="bg-gradient-to-b from-background-950 to-transparent rounded-xl p-6 w-full">
+      <div className="bg-gradient-to-b from-background-300 to-transparent rounded-xl p-6 w-full">
         <h3 className="text-lg font-bold text-text-50 mb-4 text-center">
           Current Array {isSorting && `(Pass ${currentPass})`}
         </h3>

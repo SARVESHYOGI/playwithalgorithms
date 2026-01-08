@@ -129,7 +129,7 @@ function HashAnimation() {
         </p>
       </div>
 
-      <div className="h-56 flex items-center justify-center bg-gradient-to-b from-background-950 to-transparent rounded-lg p-4">
+      <div className="h-56 flex items-center justify-center bg-gradient-to-b from-background-500 to-transparent rounded-lg p-4">
         <div className="flex flex-col items-center w-full h-full">
           <div className="text-sm font-bold text-background mb-3 flex items-center gap-1">
             🗂️ HASH TABLE

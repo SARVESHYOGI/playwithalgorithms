@@ -114,7 +114,7 @@ function LinearAnimation() {
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center p-4 bg-gradient-to-b from-background-900 to-transparent mx-4 my-2 rounded-lg">
+      <div className="flex-1 flex items-center justify-center p-4 bg-gradient-to-b from-background-200 to-transparent mx-4 my-2 rounded-lg">
         <div className="flex flex-col items-center justify-between h-full w-full max-w-xs">
           <div className="flex-shrink-0 mb-4">
             <div className="text-primary-900 font-semibold text-sm flex items-center gap-2 bg-background-50 px-3 py-1 rounded-full shadow-sm">

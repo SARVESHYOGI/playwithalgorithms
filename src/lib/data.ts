@@ -29,18 +29,18 @@ export const sortingAlgorithms = [
     description:
       "A divide-and-conquer algorithm that selects a 'pivot' element and partitions the array around it.",
   },
-  {
-    id: "heap-sort",
-    name: "Heap Sort",
-    description:
-      "A comparison-based sorting algorithm that builds a heap structure and then sorts the array.",
-  },
-  {
-    id: "radix-sort",
-    name: "Radix Sort",
-    description:
-      "A non-comparative sorting algorithm that sorts numbers by processing individual digits.",
-  },
+  // {
+  //   id: "heap-sort",
+  //   name: "Heap Sort",
+  //   description:
+  //     "A comparison-based sorting algorithm that builds a heap structure and then sorts the array.",
+  // },
+  // {
+  //   id: "radix-sort",
+  //   name: "Radix Sort",
+  //   description:
+  //     "A non-comparative sorting algorithm that sorts numbers by processing individual digits.",
+  // },
   {
     id: "bucket-sort",
     name: "Bucket Sort",

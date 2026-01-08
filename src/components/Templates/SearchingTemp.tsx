@@ -170,7 +170,7 @@ function SearchingAnimation() {
         </p>
       </div>
 
-      <div className="flex justify-center items-end gap-2 h-48 bg-gradient-to-b from-background-900 to-transparent rounded-lg p-4">
+      <div className="flex justify-center items-end gap-2 h-48 bg-gradient-to-b from-background-200 to-transparent rounded-lg p-4">
         {animationData.map((value, index) => (
           <div
             key={`${index}-${value}`}
