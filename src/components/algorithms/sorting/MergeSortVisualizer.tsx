@@ -231,7 +231,7 @@ export default function MergeSortVisualizer({
         </div>
       </div>
 
-      <div className="flex gap-2 items-end justify-center overflow-x-auto p-6   min-h-[350px] relative bg-gradient-to-b from-background-950 to-transparent  rounded-xl w-full">
+      <div className="flex gap-2 items-end justify-center overflow-x-auto p-6   min-h-[350px] relative bg-gradient-to-b from-background-200 to-transparent  rounded-xl w-full">
         {dividingRange && (
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-background-500 text-background px-3 py-1 rounded-full text-sm font-bold shadow-lg">
             Dividing: {dividingRange[0]} - {dividingRange[1]}

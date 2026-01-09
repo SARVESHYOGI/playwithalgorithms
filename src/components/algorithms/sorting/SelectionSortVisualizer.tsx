@@ -318,7 +318,7 @@ export default function SelectionSortVisualizer({
         </div>
       </div>
 
-      <div className="bg-gradient-to-b from-background-950 to-transparent rounded-xl p-6 shadow-md w-full">
+      <div className="bg-gradient-to-b from-background-200 to-transparent rounded-xl p-6 shadow-md w-full">
         <h3 className="text-lg font-bold text-background mb-4 text-center">
           Current Array {isSorting && `(Pass ${currentPass})`}
         </h3>

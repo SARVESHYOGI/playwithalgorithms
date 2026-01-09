@@ -261,7 +261,7 @@ export default function QuickSortVisualizer({
         </div>
       </div>
 
-      <div className="flex gap-2 w-full items-end justify-center overflow-x-auto border-2 border-background-200 p-6 rounded-xl  min-h-[350px] relative bg-gradient-to-b from-background-950 to-transparent">
+      <div className="flex gap-2 w-full items-end justify-center overflow-x-auto border-2 border-background-200 p-6 rounded-xl  min-h-[350px] relative bg-gradient-to-b from-background-200 to-transparent">
         {currentRange && (
           <div className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-background-500 text-background px-3 py-1 rounded-full text-sm font-bold">
             Current Range: {currentRange[0]} - {currentRange[1]}
