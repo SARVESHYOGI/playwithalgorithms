@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  app:
+    image: playwithalgorithms
+    container_name: playwithalgorithms
+    ports: 
+      - "3000:3000"
+    
