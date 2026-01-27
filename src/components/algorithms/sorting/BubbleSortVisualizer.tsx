@@ -1,3 +1,4 @@
+import BubbleSortDesc from "@/components/descriptions/BubbleSortDesc";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -7,7 +8,7 @@ export default function BubbleSortVisualizer({
   array?: number[];
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [64, 34, 25, 12, 22, 11, 90]
+    initialArray || [64, 34, 25, 12, 22, 11, 90],
   );
   const [isSorting, setIsSorting] = useState(false);
   const [currentStep, setCurrentStep] = useState<string>("");
@@ -44,7 +45,7 @@ export default function BubbleSortVisualizer({
       setCurrentStep(
         `Pass ${i + 1}: Bubbling largest unsorted element to position ${
           len - 1 - i
-        }`
+        }`,
       );
       await sleep(speed);
 
@@ -57,7 +58,7 @@ export default function BubbleSortVisualizer({
         setCurrentStep(
           `Pass ${i + 1}: Comparing elements at positions ${j} and ${j + 1} (${
             arr[j]
-          } vs ${arr[j + 1]})`
+          } vs ${arr[j + 1]})`,
         );
         totalComparisons++;
         setComparisons(totalComparisons);
@@ -68,7 +69,7 @@ export default function BubbleSortVisualizer({
           setCurrentStep(
             `Pass ${i + 1}: Swapping ${arr[j]} and ${arr[j + 1]} (${arr[j]} > ${
               arr[j + 1]
-            })`
+            })`,
           );
 
           [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
@@ -80,7 +81,7 @@ export default function BubbleSortVisualizer({
           await sleep(speed);
         } else {
           setCurrentStep(
-            `Pass ${i + 1}: No swap needed (${arr[j]} ≤ ${arr[j + 1]})`
+            `Pass ${i + 1}: No swap needed (${arr[j]} ≤ ${arr[j + 1]})`,
           );
           await sleep(speed / 2);
         }
@@ -90,7 +91,7 @@ export default function BubbleSortVisualizer({
       setCurrentStep(
         `Pass ${i + 1} completed: Element ${
           arr[len - i - 1]
-        } is now in its final position`
+        } is now in its final position`,
       );
       await sleep(speed);
 
@@ -111,7 +112,7 @@ export default function BubbleSortVisualizer({
     setPointerI(null);
     setPointerJ(null);
     setCurrentStep(
-      `Bubble Sort completed! Array sorted in ${currentPass} passes with ${totalComparisons} comparisons and ${totalSwaps} swaps.`
+      `Bubble Sort completed! Array sorted in ${currentPass} passes with ${totalComparisons} comparisons and ${totalSwaps} swaps.`,
     );
     await sleep(1500);
     setCurrentStep("");
@@ -142,59 +143,27 @@ export default function BubbleSortVisualizer({
     return Math.max(minHeight, normalizedValue * maxHeight);
   };
 
-  // const getBarColor = (index: number, value: number) => {
-  //   if (sortedElements.has(index)) return "#10b981";
-  //   if (
-  //     lastSwappedIndices &&
-  //     (lastSwappedIndices[0] === index || lastSwappedIndices[1] === index)
-  //   ) {
-  //     return "#f59e0b";
-  //   }
-  //   if (pointerI === index || pointerJ === index) return "#ef4444";
-  //   return getColor(value, index);
-  // };
-
   const getBarColor = (index: number, value: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
     const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
       "--primary-400",
       "--primary-500",
       "--primary-600",
       "--primary-700",
       "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
     ];
     const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
       "--secondary-400",
       "--secondary-500",
       "--secondary-600",
       "--secondary-700",
       "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
     ];
     const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
       "--accent-400",
       "--accent-500",
       "--accent-600",
       "--accent-700",
       "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
     ];
 
     let colorSet = primaryColors;
@@ -210,23 +179,6 @@ export default function BubbleSortVisualizer({
       .getPropertyValue(colorVariable)
       .trim();
   };
-
-  // const getBarBorder = (index: number) => {
-  //   if (
-  //     isSwapping &&
-  //     lastSwappedIndices &&
-  //     (lastSwappedIndices[0] === index || lastSwappedIndices[1] === index)
-  //   ) {
-  //     return "ring-4 ring-orange-400 animate-pulse";
-  //   }
-  //   if (pointerI === index || pointerJ === index) {
-  //     return "ring-4 ring-red-400 scale-110";
-  //   }
-  //   if (sortedElements.has(index)) {
-  //     return "ring-2 ring-green-400";
-  //   }
-  //   return "border-white/30";
-  // };
 
   return (
     <div className="flex flex-col items-center gap-6 p-6 w-full max-w-7xl mx-auto bg-background-100 rounded-2xl shadow-xl">
@@ -314,6 +266,7 @@ export default function BubbleSortVisualizer({
 
             return (
               <div
+                data-testid="array-bar"
                 className="flex flex-col items-center transition-all duration-300"
                 key={`${index}-${value}`}
               >
@@ -326,8 +279,8 @@ export default function BubbleSortVisualizer({
                     boxShadow: isPointer
                       ? "0 4px 5px background"
                       : isSorted
-                      ? "0 4px 5px background-400"
-                      : "0 4px 5px primary",
+                        ? "0 4px 5px background-400"
+                        : "0 4px 5px primary",
                   }}
                 >
                   <div className="pb-2 text-center">
@@ -376,8 +329,8 @@ export default function BubbleSortVisualizer({
                   i < currentPass
                     ? "bg-background-500 text-text-900"
                     : i === currentPass - 1
-                    ? "bg-background-500 text-text-900 animate-pulse"
-                    : "bg-background-200 text-text-500"
+                      ? "bg-background-500 text-text-900 animate-pulse"
+                      : "bg-background-200 text-text-500"
                 }`}
               >
                 {i + 1}
@@ -420,23 +373,8 @@ export default function BubbleSortVisualizer({
         </Button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-text-800 mb-2">How Bubble Sort Works:</h3>
-        <p className="text-text-600 text-sm mb-2">
-          Bubble Sort repeatedly compares adjacent elements and swaps them if
-          theyre in the wrong order. After each pass, the largest unsorted
-          element bubbles to its correct position at the end of the array. The
-          algorithm continues until no swaps are needed.
-        </p>
-        <div className="text-text-600 text-sm">
-          <strong>Steps:</strong> 1. Compare adjacent elements • 2. Swap if left
-          &gt; right • 3. Continue through array • 4. Repeat until no swaps
-          needed
-        </div>
-        <div className="text-text-600 text-sm mt-2">
-          <strong>Time Complexity:</strong> Best case O(n), Average case O(n²),
-          Worst case O(n²) • <strong>Space Complexity:</strong> O(1)
-        </div>
+      <div>
+        <BubbleSortDesc />
       </div>
     </div>
   );
