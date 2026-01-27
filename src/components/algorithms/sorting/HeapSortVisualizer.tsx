@@ -1,3 +1,5 @@
+import HeapSortDesc from "@/components/descriptions/sorting/HeapSortDesc";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useState } from "react";
 
 export default function HeapSortVisualizer({
@@ -6,7 +8,7 @@ export default function HeapSortVisualizer({
   array?: number[];
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [64, 34, 25, 12, 22, 11, 90]
+    initialArray || [64, 34, 25, 12, 22, 11, 90],
   );
   const [isSorting, setIsSorting] = useState(false);
   const [currentNode, setCurrentNode] = useState<number | null>(null);
@@ -75,7 +77,7 @@ export default function HeapSortVisualizer({
     arr: number[],
     n: number,
     rootIdx: number,
-    isBuilding: boolean
+    isBuilding: boolean,
   ) => {
     let largest = rootIdx;
     const left = 2 * rootIdx + 1;
@@ -85,7 +87,7 @@ export default function HeapSortVisualizer({
     setCurrentStep(
       isBuilding
         ? `Heapifying subtree rooted at index ${rootIdx} (value: ${arr[rootIdx]})`
-        : `Heapifying root after extraction`
+        : `Heapifying root after extraction`,
     );
     await sleep(speed);
 
@@ -104,7 +106,7 @@ export default function HeapSortVisualizer({
       setComparingNodes([largest, right]);
       setComparisons((prev) => prev + 1);
       setCurrentStep(
-        `Comparing ${arr[largest]} with right child ${arr[right]}`
+        `Comparing ${arr[largest]} with right child ${arr[right]}`,
       );
       await sleep(speed);
 
@@ -154,48 +156,6 @@ export default function HeapSortVisualizer({
   };
 
   const getBarColor = (index: number, value: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -213,7 +173,7 @@ export default function HeapSortVisualizer({
   const getTreePosition = (
     index: number,
     level: number,
-    positionInLevel: number
+    positionInLevel: number,
   ) => {
     const totalWidth = 600;
     const levelHeight = 80;
@@ -330,7 +290,7 @@ export default function HeapSortVisualizer({
           value={array[i]}
           level={currentLevel}
           positionInLevel={positionInLevel}
-        />
+        />,
       );
     }
 
@@ -364,8 +324,8 @@ export default function HeapSortVisualizer({
             {phase === "building"
               ? "Building"
               : phase === "sorting"
-              ? "Sorting"
-              : "Ready"}
+                ? "Sorting"
+                : "Ready"}
           </div>
           <div className="text-sm text-background-600">Phase</div>
         </div>
@@ -471,10 +431,10 @@ export default function HeapSortVisualizer({
                     isActive
                       ? "ring-4 ring-red-background-400 scale-110 border-red-background-300 animate-pulse"
                       : isComparing
-                      ? "ring-4 ring-yellow-background-400 scale-105 border-yellow-background-300"
-                      : isSorted
-                      ? "ring-2 ring-background-background-400 border-background-background-300"
-                      : "border-background/30"
+                        ? "ring-4 ring-yellow-background-400 scale-105 border-yellow-background-300"
+                        : isSorted
+                          ? "ring-2 ring-background-background-400 border-background-background-300"
+                          : "border-background/30"
                   } hover:scale-105`}
                   style={{
                     width: Math.max(array.length <= 7 ? 50 : 40, 35),
@@ -525,24 +485,8 @@ export default function HeapSortVisualizer({
         </button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-background-800 mb-2">
-          How HeapSort Works:
-        </h3>
-        <p className="text-background-600 text-sm mb-2">
-          HeapSort is a comparison-based sorting algorithm that uses a binary
-          heap data structure. It first builds a max heap, then repeatedly
-          extracts the maximum element and places it at the end.
-        </p>
-        <div className="text-background-600 text-sm">
-          <strong>Phase 1:</strong> Build max heap (heapify from bottom-up) •
-          <strong> Phase 2:</strong> Extract max elements one by one
-        </div>
-        <p className="text-background-600 text-sm mt-1">
-          <strong>Time Complexity:</strong> O(n log n) always •
-          <strong> Space Complexity:</strong> O(1) •<strong> In-place:</strong>{" "}
-          Yes •<strong> Stable:</strong> No
-        </p>
+      <div>
+        <HeapSortDesc />
       </div>
     </div>
   );

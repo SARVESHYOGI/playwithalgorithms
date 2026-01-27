@@ -1,3 +1,5 @@
+import LinearSearchDesc from "@/components/descriptions/searching/LinearSearchDesc";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useState } from "react";
 
 export default function LinearSearchVisualizer({
@@ -8,7 +10,7 @@ export default function LinearSearchVisualizer({
   searchElement?: number;
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [64, 34, 25, 12, 22, 11, 90, 88, 76, 50]
+    initialArray || [64, 34, 25, 12, 22, 11, 90, 88, 76, 50],
   );
   const [isSearching, setIsSearching] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
@@ -54,7 +56,7 @@ export default function LinearSearchVisualizer({
       if (i === array.length - 1) {
         setSearchResult("not-found");
         setCurrentStep(
-          `Search complete. Target ${target} not found in the array.`
+          `Search complete. Target ${target} not found in the array.`,
         );
         await sleep(speed * 2);
       }
@@ -84,48 +86,6 @@ export default function LinearSearchVisualizer({
   };
 
   const getColor = (value: number, index: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -193,8 +153,8 @@ export default function LinearSearchVisualizer({
             {searchResult === "found"
               ? foundIndex
               : searchResult === "not-found"
-              ? "N/A"
-              : "-"}
+                ? "N/A"
+                : "-"}
           </div>
           <div className="text-sm text-background-600">Found At</div>
         </div>
@@ -255,7 +215,7 @@ export default function LinearSearchVisualizer({
                 <div
                   className={`rounded-lg flex items-end justify-center text-background font-bold shadow-lg transform transition-all duration-300 border-2 ${getBarBorder(
                     index,
-                    value
+                    value,
                   )} hover:scale-105`}
                   style={{
                     width: `${Math.max(array.length <= 8 ? 60 : 50, 45)}px`,
@@ -264,8 +224,8 @@ export default function LinearSearchVisualizer({
                     boxShadow: isCurrent
                       ? "0 8px 25px rgba(239, 68, 68, 0.4)"
                       : isFound
-                      ? "0 8px 25px rgba(16, 185, 129, 0.4)"
-                      : "0 4px 15px rgba(0,0,0,0.1)",
+                        ? "0 8px 25px rgba(16, 185, 129, 0.4)"
+                        : "0 4px 15px rgba(0,0,0,0.1)",
                   }}
                 >
                   <span className="pb-2 text-sm font-bold drop-shadow-sm">
@@ -372,25 +332,8 @@ export default function LinearSearchVisualizer({
         </button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-background-800 mb-2">
-          How Linear Search Works:
-        </h3>
-        <p className="text-background-600 text-sm mb-2">
-          Linear search (also called sequential search) checks each element in
-          the array one by one from start to finish until it finds the target
-          value or reaches the end of the array.
-        </p>
-        <div className="text-background-600 text-sm">
-          <strong>Best Case:</strong> O(1) - target is first element •
-          <strong> Average Case:</strong> O(n/2) •<strong> Worst Case:</strong>{" "}
-          O(n) - target is last or not present
-        </div>
-        <p className="text-background-600 text-sm mt-1">
-          <strong>Space Complexity:</strong> O(1) •<strong> Works on:</strong>{" "}
-          Sorted and unsorted arrays •<strong> Simple:</strong> Easy to
-          implement and understand
-        </p>
+      <div>
+        <LinearSearchDesc />
       </div>
     </div>
   );

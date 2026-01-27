@@ -1,3 +1,5 @@
+import BinarySearchDesc from "@/components/descriptions/searching/BinarySearchDesc";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useEffect, useState } from "react";
 
 export default function BinarySearchVisualizer({
@@ -8,7 +10,7 @@ export default function BinarySearchVisualizer({
   searchElement?: number;
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [2, 5, 8, 12, 16, 23, 38, 45, 56, 67, 78]
+    initialArray || [2, 5, 8, 12, 16, 23, 38, 45, 56, 67, 78],
   );
   const [isSorted, setIsSorted] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
@@ -42,7 +44,7 @@ export default function BinarySearchVisualizer({
   const binarySearch = async () => {
     if (!isSorted) {
       alert(
-        "Array must be sorted for binary search! Please generate a sorted array first."
+        "Array must be sorted for binary search! Please generate a sorted array first.",
       );
       return;
     }
@@ -84,7 +86,7 @@ export default function BinarySearchVisualizer({
       setMid(midPtr);
 
       setCurrentStep(
-        `Iteration ${iteration}: Searching in range [${leftPtr}, ${rightPtr}]. Middle index: ${midPtr}`
+        `Iteration ${iteration}: Searching in range [${leftPtr}, ${rightPtr}]. Middle index: ${midPtr}`,
       );
       await sleep(speed);
 
@@ -98,7 +100,7 @@ export default function BinarySearchVisualizer({
         comparison = `${midValue} == ${target}`;
         setCurrentComparison(comparison);
         setCurrentStep(
-          `Iteration ${iteration}: Found target! ${midValue} == ${target} at index ${midPtr}`
+          `Iteration ${iteration}: Found target! ${midValue} == ${target} at index ${midPtr}`,
         );
 
         history.push({
@@ -116,7 +118,7 @@ export default function BinarySearchVisualizer({
         comparison = `${midValue} < ${target}`;
         setCurrentComparison(comparison);
         setCurrentStep(
-          `Iteration ${iteration}: ${midValue} < ${target}, search right half`
+          `Iteration ${iteration}: ${midValue} < ${target}, search right half`,
         );
 
         history.push({
@@ -131,14 +133,14 @@ export default function BinarySearchVisualizer({
         leftPtr = midPtr + 1;
 
         setCurrentStep(
-          `Iteration ${iteration}: Updating left boundary to ${leftPtr}`
+          `Iteration ${iteration}: Updating left boundary to ${leftPtr}`,
         );
         await sleep(speed);
       } else {
         comparison = `${midValue} > ${target}`;
         setCurrentComparison(comparison);
         setCurrentStep(
-          `Iteration ${iteration}: ${midValue} > ${target}, search left half`
+          `Iteration ${iteration}: ${midValue} > ${target}, search left half`,
         );
 
         history.push({
@@ -153,7 +155,7 @@ export default function BinarySearchVisualizer({
         rightPtr = midPtr - 1;
 
         setCurrentStep(
-          `Iteration ${iteration}: Updating right boundary to ${rightPtr}`
+          `Iteration ${iteration}: Updating right boundary to ${rightPtr}`,
         );
         await sleep(speed);
       }
@@ -161,14 +163,14 @@ export default function BinarySearchVisualizer({
 
     if (found === null) {
       setCurrentStep(
-        `Binary Search completed: Target ${target} not found in array after ${totalComparisons} comparisons`
+        `Binary Search completed: Target ${target} not found in array after ${totalComparisons} comparisons`,
       );
       setLeft(null);
       setRight(null);
       setMid(null);
     } else {
       setCurrentStep(
-        `Binary Search completed: Found target ${target} at index ${found} after ${totalComparisons} comparisons in ${iteration} iterations`
+        `Binary Search completed: Found target ${target} at index ${found} after ${totalComparisons} comparisons in ${iteration} iterations`,
       );
     }
 
@@ -217,63 +219,7 @@ export default function BinarySearchVisualizer({
     return Math.max(minHeight, normalizedValue * maxHeight);
   };
 
-  // const getBarColor = (index: number, value: number) => {
-  //   if (found === index) return "#10b981";
-  //   if (mid === index) return "#f59e0b";
-  //   if (left !== null && right !== null && index >= left && index <= right) {
-  //     return "#3b82f6";
-  //   }
-  //   if (left !== null && right !== null && (index < left || index > right)) {
-  //     return "#9ca3af";
-  //   }
-
-  //   const hue = (value * 2.5 + index * 25) % 360;
-  //   return `hsl(${hue}, 65%, 55%)`;
-  // };
-
   const getBarColor = (index: number, value: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -448,7 +394,7 @@ export default function BinarySearchVisualizer({
               >
                 <div
                   className={`rounded-lg flex items-end justify-center text-background font-bold shadow-lg transform transition-all duration-500 border-2 ${getBarBorder(
-                    index
+                    index,
                   )} hover:scale-105`}
                   style={{
                     width: Math.max(array.length <= 15 ? 45 : 35, 30),
@@ -457,10 +403,10 @@ export default function BinarySearchVisualizer({
                     boxShadow: isFound
                       ? "0 8px 25px rgba(16, 185, 129, 0.5)"
                       : isMid
-                      ? "0 8px 25px rgba(245, 158, 11, 0.5)"
-                      : inRange
-                      ? "0 4px 15px rgba(59, 130, 246, 0.4)"
-                      : "0 4px 15px rgba(0,0,0,0.1)",
+                        ? "0 8px 25px rgba(245, 158, 11, 0.5)"
+                        : inRange
+                          ? "0 4px 15px rgba(59, 130, 246, 0.4)"
+                          : "0 4px 15px rgba(0,0,0,0.1)",
                   }}
                 >
                   <div className="pb-2 text-center">
@@ -535,8 +481,8 @@ export default function BinarySearchVisualizer({
                       {entry.comparison.includes("==")
                         ? "Found!"
                         : entry.comparison.includes("<")
-                        ? "Search right"
-                        : "Search left"}
+                          ? "Search right"
+                          : "Search left"}
                     </td>
                   </tr>
                 ))}
@@ -587,28 +533,8 @@ export default function BinarySearchVisualizer({
         </button>
       </div>
 
-      {/* Algorithm Info */}
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-background-800 mb-2">
-          How Binary Search Works:
-        </h3>
-        <p className="text-background-600 text-sm mb-2">
-          Binary Search is an efficient algorithm for finding an item from a
-          sorted list. It works by repeatedly dividing the search interval in
-          half. If the value is less than the middle element, it searches the
-          left half; otherwise, it searches the right half. This continues until
-          the value is found or the interval is empty.
-        </p>
-        <div className="text-background-600 text-sm">
-          <strong>Steps:</strong> 1) Find middle element • 2) Compare with
-          target • 3) Eliminate half of search space • 4) Repeat until found or
-          exhausted
-        </div>
-        <div className="text-background-600 text-sm mt-2">
-          <strong>Time Complexity:</strong> O(log n) •{" "}
-          <strong>Space Complexity:</strong> O(1) •{" "}
-          <strong>Prerequisite:</strong> Array must be sorted
-        </div>
+      <div>
+        <BinarySearchDesc />
       </div>
     </div>
   );

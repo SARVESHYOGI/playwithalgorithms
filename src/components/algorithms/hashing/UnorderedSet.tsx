@@ -1,15 +1,12 @@
+import UnorderedSetDesc from "@/components/descriptions/hashing/UnorderedSetDesc";
+import { SetEntry } from "@/types";
 import { useState } from "react";
-
-interface SetEntry {
-  value: string;
-  id: string;
-}
 
 export default function UnorderedSetVisualizer() {
   const [unorderedSet, setUnorderedSet] = useState<SetEntry[][]>(
     Array(6)
       .fill(null)
-      .map(() => [])
+      .map(() => []),
   );
   const [inputValue, setInputValue] = useState<string>("apple");
   const [isAnimating, setIsAnimating] = useState(false);
@@ -18,7 +15,7 @@ export default function UnorderedSetVisualizer() {
   const [speed, setSpeed] = useState(1000);
   const [bucketCount, setBucketCount] = useState(6);
   const [highlightedBucket, setHighlightedBucket] = useState<number | null>(
-    null
+    null,
   );
   const [highlightedEntry, setHighlightedEntry] = useState<{
     bucket: number;
@@ -45,20 +42,20 @@ export default function UnorderedSetVisualizer() {
 
     const bucketIndex = hashFunction(inputValue);
     setCurrentOperation(
-      `Computing hash for "${inputValue}": hash("${inputValue}") = ${bucketIndex}`
+      `Computing hash for "${inputValue}": hash("${inputValue}") = ${bucketIndex}`,
     );
     setHighlightedBucket(bucketIndex);
     await sleep(speed);
 
     const bucket = unorderedSet[bucketIndex];
     const existingIndex = bucket.findIndex(
-      (entry) => entry.value === inputValue
+      (entry) => entry.value === inputValue,
     );
 
     if (existingIndex !== -1) {
       setHighlightedEntry({ bucket: bucketIndex, index: existingIndex });
       setCurrentOperation(
-        `Value "${inputValue}" already exists in bucket ${bucketIndex}. Sets don't allow duplicates.`
+        `Value "${inputValue}" already exists in bucket ${bucketIndex}. Sets don't allow duplicates.`,
       );
       await sleep(speed * 2);
       setLastOperation(`"${inputValue}" already exists - not added`);
@@ -97,14 +94,14 @@ export default function UnorderedSetVisualizer() {
 
     const bucketIndex = hashFunction(inputValue);
     setCurrentOperation(
-      `Searching for "${inputValue}": hash("${inputValue}") = ${bucketIndex}`
+      `Searching for "${inputValue}": hash("${inputValue}") = ${bucketIndex}`,
     );
     setHighlightedBucket(bucketIndex);
     await sleep(speed);
 
     const bucket = unorderedSet[bucketIndex];
     setCurrentOperation(
-      `Searching in bucket ${bucketIndex} (chain length: ${bucket.length})`
+      `Searching in bucket ${bucketIndex} (chain length: ${bucket.length})`,
     );
     await sleep(speed);
 
@@ -114,14 +111,14 @@ export default function UnorderedSetVisualizer() {
       setCurrentOperation(
         `Checking entry ${i + 1}/${bucket.length}: "${
           bucket[i].value
-        }" == "${inputValue}"?`
+        }" == "${inputValue}"?`,
       );
       await sleep(speed);
 
       if (bucket[i].value === inputValue) {
         found = true;
         setCurrentOperation(
-          `Found "${inputValue}" in bucket ${bucketIndex}! Value exists in set.`
+          `Found "${inputValue}" in bucket ${bucketIndex}! Value exists in set.`,
         );
         await sleep(speed * 2);
         break;
@@ -130,7 +127,7 @@ export default function UnorderedSetVisualizer() {
 
     if (!found) {
       setCurrentOperation(
-        `Value "${inputValue}" not found in bucket ${bucketIndex}`
+        `Value "${inputValue}" not found in bucket ${bucketIndex}`,
       );
       await sleep(speed);
     }
@@ -138,7 +135,7 @@ export default function UnorderedSetVisualizer() {
     setLastOperation(
       found
         ? `"${inputValue}" exists in set`
-        : `"${inputValue}" not found in set`
+        : `"${inputValue}" not found in set`,
     );
     setTimeout(() => {
       setCurrentOperation("");
@@ -157,7 +154,7 @@ export default function UnorderedSetVisualizer() {
 
     const bucketIndex = hashFunction(inputValue);
     setCurrentOperation(
-      `Removing "${inputValue}": hash("${inputValue}") = ${bucketIndex}`
+      `Removing "${inputValue}": hash("${inputValue}") = ${bucketIndex}`,
     );
     setHighlightedBucket(bucketIndex);
     await sleep(speed);
@@ -172,20 +169,20 @@ export default function UnorderedSetVisualizer() {
       setCurrentOperation(
         `Checking entry ${i + 1}/${bucket.length}: "${
           bucket[i].value
-        }" == "${inputValue}"?`
+        }" == "${inputValue}"?`,
       );
       await sleep(speed);
 
       if (bucket[i].value === inputValue) {
         found = true;
         setCurrentOperation(
-          `Found "${inputValue}"! Removing from bucket ${bucketIndex}`
+          `Found "${inputValue}"! Removing from bucket ${bucketIndex}`,
         );
         await sleep(speed);
 
         const newSet = [...unorderedSet];
         newSet[bucketIndex] = newSet[bucketIndex].filter(
-          (_, index) => index !== i
+          (_, index) => index !== i,
         );
         setUnorderedSet(newSet);
         break;
@@ -198,7 +195,7 @@ export default function UnorderedSetVisualizer() {
     }
 
     setLastOperation(
-      found ? `Removed "${inputValue}"` : `Value "${inputValue}" not found`
+      found ? `Removed "${inputValue}"` : `Value "${inputValue}" not found`,
     );
     setTimeout(() => {
       setCurrentOperation("");
@@ -214,7 +211,7 @@ export default function UnorderedSetVisualizer() {
     setUnorderedSet(
       Array(bucketCount)
         .fill(null)
-        .map(() => [])
+        .map(() => []),
     );
     setLastOperation("UnorderedSet cleared");
     setCurrentOperation("");
@@ -227,7 +224,7 @@ export default function UnorderedSetVisualizer() {
     setUnorderedSet(
       Array(newBucketCount)
         .fill(null)
-        .map(() => [])
+        .map(() => []),
     );
     setLastOperation(`Resized to ${newBucketCount} buckets`);
   };
@@ -450,7 +447,7 @@ export default function UnorderedSetVisualizer() {
                             style={{
                               backgroundColor: getEntryColor(
                                 bucketIndex,
-                                entryIndex
+                                entryIndex,
                               ),
                             }}
                           >
@@ -600,81 +597,8 @@ export default function UnorderedSetVisualizer() {
         </button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-5xl">
-        <h3 className="font-bold text-background-800 mb-3">
-          UnorderedSet Operations:
-        </h3>
-        <div className="grid md:grid-cols-2 gap-4 text-sm">
-          <div>
-            <h4 className="font-semibold text-background-700 mb-2">
-              Basic Operations:
-            </h4>
-            <ul className="space-y-1 text-background-600">
-              <li>
-                <strong>insert(value):</strong> Add value to set (ignores
-                duplicates)
-              </li>
-              <li>
-                <strong>find(value):</strong> Check if value exists in set
-              </li>
-              <li>
-                <strong>erase(value):</strong> Remove value from set
-              </li>
-              <li>
-                <strong>size():</strong> Get number of elements in set
-              </li>
-              <li>
-                <strong>empty():</strong> Check if set is empty
-              </li>
-            </ul>
-
-            <h4 className="font-semibold text-background-700 mb-2 mt-3">
-              Set Operations:
-            </h4>
-            <ul className="space-y-1 text-background-600">
-              <li>
-                <strong>Union:</strong> Combine elements from multiple sets
-              </li>
-              <li>
-                <strong>Intersection:</strong> Find common elements
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold text-background-700 mb-2">
-              Characteristics:
-            </h4>
-            <ul className="space-y-1 text-background-600">
-              <li>
-                <strong>No Duplicates:</strong> Each element appears at most
-                once
-              </li>
-              <li>
-                <strong>Unordered:</strong> No specific ordering of elements
-              </li>
-              <li>
-                <strong>Average Time:</strong> O(1) for insert, find, erase
-              </li>
-              <li>
-                <strong>Worst Case:</strong> O(n) when all elements hash to same
-                bucket
-              </li>
-              <li>
-                <strong>Space:</strong> O(n) for elements + O(b) for buckets
-              </li>
-              <li>
-                <strong>Use Cases:</strong> Membership testing, removing
-                duplicates, set operations
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="mt-4 p-3 bg-background-50 rounded-lg text-sm">
-          <strong>C++ STL Context:</strong> unordered_set is the hash table
-          implementation of a set, while std::set uses a balanced binary search
-          tree (red-black tree). Use unordered_set when you need fast
-          average-case performance and dont need ordered iteration.
-        </div>
+      <div>
+        <UnorderedSetDesc />
       </div>
     </div>
   );

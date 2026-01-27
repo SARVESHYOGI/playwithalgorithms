@@ -1,3 +1,5 @@
+import BucketSortDesc from "@/components/descriptions/sorting/BucketSortDesc";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useState } from "react";
 
 export default function BucketSortVisualizer({
@@ -6,7 +8,7 @@ export default function BucketSortVisualizer({
   array?: number[];
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [64, 34, 25, 12, 22, 11, 90]
+    initialArray || [64, 34, 25, 12, 22, 11, 90],
   );
   const [isSorting, setIsSorting] = useState(false);
   const [buckets, setBuckets] = useState<number[][]>([]);
@@ -14,10 +16,10 @@ export default function BucketSortVisualizer({
   const [speed, setSpeed] = useState(600);
   const [numBuckets, setNumBuckets] = useState(5);
   const [highlightedElement, setHighlightedElement] = useState<number | null>(
-    null
+    null,
   );
   const [highlightedBucket, setHighlightedBucket] = useState<number | null>(
-    null
+    null,
   );
   const [sortingBucket, setSortingBucket] = useState<number | null>(null);
   const [showBuckets, setShowBuckets] = useState(true);
@@ -41,19 +43,19 @@ export default function BucketSortVisualizer({
     const bucketSize = Math.ceil(range / numBuckets);
 
     setCurrentStep(
-      `Range: ${minValue} to ${maxValue}, Bucket size: ${bucketSize}`
+      `Range: ${minValue} to ${maxValue}, Bucket size: ${bucketSize}`,
     );
     await sleep(speed);
 
     const bucketArray: number[][] = Array.from(
       { length: numBuckets },
-      () => []
+      () => [],
     );
     setBuckets([...bucketArray]);
 
     setCurrentPhase("distributing");
     setCurrentStep(
-      "Phase 1: Distributing elements into buckets based on value ranges"
+      "Phase 1: Distributing elements into buckets based on value ranges",
     );
     await sleep(speed);
 
@@ -61,7 +63,7 @@ export default function BucketSortVisualizer({
       const value = arr[i];
       const bucketIndex = Math.min(
         Math.floor((value - minValue) / bucketSize),
-        numBuckets - 1
+        numBuckets - 1,
       );
 
       setHighlightedElement(i);
@@ -70,7 +72,7 @@ export default function BucketSortVisualizer({
       const rangeStart = minValue + bucketIndex * bucketSize;
       const rangeEnd = rangeStart + bucketSize - 1;
       setCurrentStep(
-        `Element ${value}: fits in bucket ${bucketIndex} (range ${rangeStart}-${rangeEnd})`
+        `Element ${value}: fits in bucket ${bucketIndex} (range ${rangeStart}-${rangeEnd})`,
       );
 
       bucketArray[bucketIndex].push(value);
@@ -93,7 +95,7 @@ export default function BucketSortVisualizer({
 
       setSortingBucket(bucketIndex);
       setCurrentStep(
-        `Sorting bucket ${bucketIndex} with ${bucket.length} elements`
+        `Sorting bucket ${bucketIndex} with ${bucket.length} elements`,
       );
       await sleep(speed);
 
@@ -102,7 +104,7 @@ export default function BucketSortVisualizer({
         let j = i - 1;
 
         setCurrentStep(
-          `Sorting bucket ${bucketIndex}: comparing ${key} with previous elements`
+          `Sorting bucket ${bucketIndex}: comparing ${key} with previous elements`,
         );
         await sleep(speed / 2);
 
@@ -137,7 +139,7 @@ export default function BucketSortVisualizer({
       if (bucket.length > 0) {
         setHighlightedBucket(bucketIndex);
         setCurrentStep(
-          `Collecting ${bucket.length} element(s) from bucket ${bucketIndex}`
+          `Collecting ${bucket.length} element(s) from bucket ${bucketIndex}`,
         );
         await sleep(speed);
       }
@@ -177,48 +179,6 @@ export default function BucketSortVisualizer({
   };
 
   const getColor = (value: number, index: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -293,10 +253,10 @@ export default function BucketSortVisualizer({
             {currentPhase === "idle"
               ? "Ready"
               : currentPhase === "distributing"
-              ? "Distributing"
-              : currentPhase === "sorting"
-              ? "Sorting"
-              : "Collecting"}
+                ? "Distributing"
+                : currentPhase === "sorting"
+                  ? "Sorting"
+                  : "Collecting"}
           </div>
           <div className="text-sm text-background-600">Phase</div>
         </div>
@@ -446,7 +406,7 @@ export default function BucketSortVisualizer({
               <div
                 key={bucketIndex}
                 className={`border-2 rounded-lg p-4 min-h-[120px] transition-all duration-300 ${getBucketColor(
-                  bucketIndex
+                  bucketIndex,
                 )}`}
               >
                 <div className="text-center mb-3">
@@ -508,25 +468,8 @@ export default function BucketSortVisualizer({
         </button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-background-800 mb-2">
-          How Bucket Sort Works:
-        </h3>
-        <p className="text-background-600 text-sm mb-2">
-          Bucket Sort distributes elements into a fixed number of buckets based
-          on their value ranges. Each bucket is then sorted individually
-          (usually with insertion sort), and finally all elements are collected
-          from the buckets in order to produce the sorted array.
-        </p>
-        <div className="text-background-600 text-sm">
-          <strong>Steps:</strong> 1) Create buckets for value ranges • 2)
-          Distribute elements into appropriate buckets • 3) Sort each bucket
-          individually • 4) Collect elements from buckets in order
-        </div>
-        <div className="text-background-600 text-sm mt-2">
-          <strong>Time Complexity:</strong> Best case O(n + k), Average case O(n
-          + k), Worst case O(n²) where k is the number of buckets
-        </div>
+      <div>
+        <BucketSortDesc />
       </div>
     </div>
   );

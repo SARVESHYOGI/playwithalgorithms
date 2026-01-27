@@ -1,3 +1,5 @@
+import MergeSortDesc from "@/components/descriptions/sorting/MergeSortDesc";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useState } from "react";
 
 export default function MergeSortVisualizer({
@@ -6,13 +8,13 @@ export default function MergeSortVisualizer({
   array?: number[];
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [64, 34, 25, 12, 22, 11, 90]
+    initialArray || [64, 34, 25, 12, 22, 11, 90],
   );
   const [isSorting, setIsSorting] = useState(false);
   const [pointerI, setPointerI] = useState<number | null>(null);
   const [pointerJ, setPointerJ] = useState<number | null>(null);
   const [dividingRange, setDividingRange] = useState<[number, number] | null>(
-    null
+    null,
   );
   const [currentStep, setCurrentStep] = useState<string>("");
   const [speed, setSpeed] = useState(600);
@@ -41,7 +43,7 @@ export default function MergeSortVisualizer({
   const mergeSortHelper = async (
     arr: number[],
     left: number,
-    right: number
+    right: number,
   ) => {
     if (left >= right) return;
 
@@ -57,7 +59,7 @@ export default function MergeSortVisualizer({
     await mergeSortHelper(arr, mid + 1, right);
 
     setCurrentStep(
-      `Merging subarrays [${left}-${mid}] and [${mid + 1}-${right}]`
+      `Merging subarrays [${left}-${mid}] and [${mid + 1}-${right}]`,
     );
     await merge(arr, left, mid, right);
   };
@@ -66,7 +68,7 @@ export default function MergeSortVisualizer({
     arr: number[],
     left: number,
     mid: number,
-    right: number
+    right: number,
   ) => {
     const merged = [];
     let i = left;
@@ -118,48 +120,6 @@ export default function MergeSortVisualizer({
   };
 
   const getColor = (value: number, index: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -323,16 +283,8 @@ export default function MergeSortVisualizer({
         </button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-background-800 mb-2">
-          How Merge Sort Works:
-        </h3>
-        <p className="text-background-600 text-sm">
-          Merge sort is a divide-and-conquer algorithm that splits the array
-          into smaller subarrays, sorts them recursively, and then merges them
-          back together. It has a time complexity of O(n log n) and is stable,
-          meaning equal elements maintain their relative order.
-        </p>
+      <div>
+        <MergeSortDesc />
       </div>
     </div>
   );
