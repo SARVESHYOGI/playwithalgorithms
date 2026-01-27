@@ -1,5 +1,6 @@
-import BubbleSortDesc from "@/components/descriptions/BubbleSortDesc";
+import BubbleSortDesc from "@/components/descriptions/sorting/BubbleSortDesc";
 import { Button } from "@/components/ui/button";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useState } from "react";
 
 export default function BubbleSortVisualizer({
@@ -144,28 +145,6 @@ export default function BubbleSortVisualizer({
   };
 
   const getBarColor = (index: number, value: number) => {
-    const primaryColors = [
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-    ];
-    const secondaryColors = [
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-    ];
-    const accentColors = [
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;

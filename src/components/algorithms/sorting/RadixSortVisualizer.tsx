@@ -1,3 +1,5 @@
+import RadixSortDesc from "@/components/descriptions/sorting/RadixSortDesc";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useState } from "react";
 
 export default function RadixSortVisualizer({
@@ -6,22 +8,22 @@ export default function RadixSortVisualizer({
   array?: number[];
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [64, 34, 25, 12, 22, 11, 90]
+    initialArray || [64, 34, 25, 12, 22, 11, 90],
   );
   const [isSorting, setIsSorting] = useState(false);
   const [currentDigit, setCurrentDigit] = useState<number>(0);
   const [buckets, setBuckets] = useState<number[][]>(
-    Array.from({ length: 10 }, () => [])
+    Array.from({ length: 10 }, () => []),
   );
   const [currentStep, setCurrentStep] = useState<string>("");
   const [speed, setSpeed] = useState(600);
   const [arraySize, setArraySize] = useState(7);
   const [iterations, setIterations] = useState(0);
   const [highlightedElement, setHighlightedElement] = useState<number | null>(
-    null
+    null,
   );
   const [highlightedBucket, setHighlightedBucket] = useState<number | null>(
-    null
+    null,
   );
   const [showBuckets, setShowBuckets] = useState(true);
 
@@ -63,7 +65,7 @@ export default function RadixSortVisualizer({
       await sleep(speed / 2);
 
       setCurrentStep(
-        `Distributing numbers into buckets based on ${digitName} digit`
+        `Distributing numbers into buckets based on ${digitName} digit`,
       );
       for (let i = 0; i < arr.length; i++) {
         const num = arr[i];
@@ -72,7 +74,7 @@ export default function RadixSortVisualizer({
         setHighlightedElement(i);
         setHighlightedBucket(digit);
         setCurrentStep(
-          `Number ${num}: ${digitName} digit is ${digit}, placing in bucket ${digit}`
+          `Number ${num}: ${digitName} digit is ${digit}, placing in bucket ${digit}`,
         );
 
         newBuckets[digit].push(num);
@@ -83,7 +85,7 @@ export default function RadixSortVisualizer({
       setHighlightedElement(null);
       setHighlightedBucket(null);
       setCurrentStep(
-        `All numbers distributed. Collecting from buckets in order...`
+        `All numbers distributed. Collecting from buckets in order...`,
       );
       await sleep(speed);
 
@@ -93,7 +95,7 @@ export default function RadixSortVisualizer({
         if (bucket.length > 0) {
           setHighlightedBucket(bucketIndex);
           setCurrentStep(
-            `Collecting ${bucket.length} number(s) from bucket ${bucketIndex}`
+            `Collecting ${bucket.length} number(s) from bucket ${bucketIndex}`,
           );
           await sleep(speed);
         }
@@ -114,7 +116,7 @@ export default function RadixSortVisualizer({
       setCurrentStep(
         `Completed sorting by ${digitName} place. Array after iteration ${
           digitPlace + 1
-        }`
+        }`,
       );
       await sleep(speed);
     }
@@ -131,7 +133,7 @@ export default function RadixSortVisualizer({
     if (isSorting) return;
     const newArray = Array.from(
       { length: arraySize },
-      () => Math.floor(Math.random() * 999) + 1
+      () => Math.floor(Math.random() * 999) + 1,
     );
     setArray(newArray);
     resetVisualization();
@@ -166,48 +168,6 @@ export default function RadixSortVisualizer({
   };
 
   const getColor = (value: number, index: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -392,7 +352,7 @@ export default function RadixSortVisualizer({
               <div
                 key={bucketIndex}
                 className={`border-2 rounded-lg p-3 min-h-[100px] transition-all duration-300 ${getBucketColor(
-                  bucketIndex
+                  bucketIndex,
                 )}`}
               >
                 <div className="text-center font-bold text-sm mb-2 text-background-700">
@@ -461,25 +421,8 @@ export default function RadixSortVisualizer({
         </button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-background-800 mb-2">
-          How Radix Sort Works:
-        </h3>
-        <p className="text-background-600 text-sm mb-2">
-          Radix Sort is a non-comparison sorting algorithm that processes digits
-          from least significant to most significant. It uses counting sort as a
-          subroutine to sort by individual digits, using buckets (0-9) for
-          decimal numbers.
-        </p>
-        <div className="text-background-600 text-sm">
-          <strong>Steps:</strong> 1) Find maximum digits • 2) Sort by each digit
-          position using stable sorting • 3) Collect from buckets in order
-        </div>
-        <p className="text-background-600 text-sm mt-1">
-          <strong>Time Complexity:</strong> O(d × (n + k)) where d=digits,
-          k=range •<strong> Space Complexity:</strong> O(n + k) •
-          <strong> Stable:</strong> Yes •<strong> Comparison-based:</strong> No
-        </p>
+      <div>
+        <RadixSortDesc />
       </div>
     </div>
   );

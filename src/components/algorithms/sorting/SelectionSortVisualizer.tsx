@@ -1,4 +1,6 @@
+import SelectionSortDesc from "@/components/descriptions/sorting/SelectionSortDesc";
 import { Button } from "@/components/ui/button";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useState } from "react";
 
 export default function SelectionSortVisualizer({
@@ -7,7 +9,7 @@ export default function SelectionSortVisualizer({
   array?: number[];
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [64, 34, 25, 12, 22, 11, 90]
+    initialArray || [64, 34, 25, 12, 22, 11, 90],
   );
   const [isSorting, setIsSorting] = useState(false);
   const [currentStep, setCurrentStep] = useState<string>("");
@@ -50,7 +52,7 @@ export default function SelectionSortVisualizer({
       setCurrentStep(
         `Pass ${
           i + 1
-        }: Finding minimum element in unsorted portion starting at position ${i}`
+        }: Finding minimum element in unsorted portion starting at position ${i}`,
       );
 
       let minIdx = i;
@@ -66,20 +68,20 @@ export default function SelectionSortVisualizer({
             arr[j]
           } at position ${j} with current minimum ${
             arr[minIdx]
-          } at position ${minIdx}`
+          } at position ${minIdx}`,
         );
         await sleep(speed);
 
         if (arr[j] < arr[minIdx]) {
           setCurrentStep(
-            `Pass ${i + 1}: Found new minimum! ${arr[j]} < ${arr[minIdx]}`
+            `Pass ${i + 1}: Found new minimum! ${arr[j]} < ${arr[minIdx]}`,
           );
           minIdx = j;
           setMinIndex(minIdx);
           await sleep(speed);
         } else {
           setCurrentStep(
-            `Pass ${i + 1}: ${arr[j]} ≥ ${arr[minIdx]}, keeping current minimum`
+            `Pass ${i + 1}: ${arr[j]} ≥ ${arr[minIdx]}, keeping current minimum`,
           );
           await sleep(speed / 2);
         }
@@ -93,7 +95,7 @@ export default function SelectionSortVisualizer({
         setCurrentStep(
           `Pass ${i + 1}: Swapping minimum element ${
             arr[minIdx]
-          } from position ${minIdx} with ${arr[i]} at position ${i}`
+          } from position ${minIdx} with ${arr[i]} at position ${i}`,
         );
 
         [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
@@ -108,7 +110,7 @@ export default function SelectionSortVisualizer({
         setCurrentStep(
           `Pass ${i + 1}: Element ${
             arr[i]
-          } is already in correct position (no swap needed)`
+          } is already in correct position (no swap needed)`,
         );
         await sleep(speed);
       }
@@ -117,7 +119,7 @@ export default function SelectionSortVisualizer({
       setCurrentStep(
         `Pass ${i + 1} completed: Element ${
           arr[i]
-        } is now in its final sorted position`
+        } is now in its final sorted position`,
       );
       await sleep(speed);
     }
@@ -127,7 +129,7 @@ export default function SelectionSortVisualizer({
     setCurrentIndex(null);
     setMinIndex(null);
     setCurrentStep(
-      `Selection Sort completed! Array sorted in ${currentPass} passes with ${totalComparisons} comparisons and ${totalSwaps} swaps.`
+      `Selection Sort completed! Array sorted in ${currentPass} passes with ${totalComparisons} comparisons and ${totalSwaps} swaps.`,
     );
     await sleep(1500);
     setCurrentStep("");
@@ -154,48 +156,6 @@ export default function SelectionSortVisualizer({
   };
 
   const getBarColor = (index: number, value: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -336,7 +296,7 @@ export default function SelectionSortVisualizer({
               >
                 <div
                   className={`rounded-lg flex items-end justify-center text-background font-bold shadow-lg transform transition-all duration-300 border-2 ${getBarBorder(
-                    index
+                    index,
                   )} hover:scale-105`}
                   style={{
                     width: Math.max(array.length <= 10 ? 50 : 40, 35),
@@ -345,12 +305,12 @@ export default function SelectionSortVisualizer({
                     boxShadow: isCurrent
                       ? "0 4px 5px background"
                       : isMin
-                      ? "0 4px 5px background"
-                      : isCompare
-                      ? "0 4px 5px background"
-                      : isSorted
-                      ? "0 4px 5px background"
-                      : "0 4px 5px background-primary",
+                        ? "0 4px 5px background"
+                        : isCompare
+                          ? "0 4px 5px background"
+                          : isSorted
+                            ? "0 4px 5px background"
+                            : "0 4px 5px background-primary",
                   }}
                 >
                   <div className="pb-2 text-center">
@@ -407,8 +367,8 @@ export default function SelectionSortVisualizer({
                   i < currentPass
                     ? "bg-green-500 text-white"
                     : i === currentPass - 1
-                    ? "bg-cyan-500 text-white animate-pulse"
-                    : "bg-gray-200 text-gray-500"
+                      ? "bg-cyan-500 text-white animate-pulse"
+                      : "bg-gray-200 text-gray-500"
                 }`}
               >
                 {i + 1}
@@ -451,25 +411,8 @@ export default function SelectionSortVisualizer({
         </Button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-background-800 mb-2">
-          How Selection Sort Works:
-        </h3>
-        <p className="text-background-600 text-sm mb-2">
-          Selection Sort divides the array into sorted and unsorted regions. It
-          repeatedly finds the minimum element from the unsorted region and
-          places it at the beginning of the unsorted region, effectively growing
-          the sorted region.
-        </p>
-        <div className="text-background-600 text-sm">
-          <strong>Steps:</strong> 1) Find minimum in unsorted portion • 2) Swap
-          with first unsorted element • 3) Move boundary of sorted region • 4)
-          Repeat until sorted
-        </div>
-        <div className="text-background-600 text-sm mt-2">
-          <strong>Time Complexity:</strong> Best case O(n²), Average case O(n²),
-          Worst case O(n²) • <strong>Space Complexity:</strong> O(1)
-        </div>
+      <div>
+        <SelectionSortDesc />
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+import InsertionSortDesc from "@/components/descriptions/sorting/InsertionSortDesc";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useState } from "react";
 
 export default function InsertionSortVisualizer({
@@ -6,7 +8,7 @@ export default function InsertionSortVisualizer({
   array?: number[];
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [64, 34, 25, 12, 22, 11, 90]
+    initialArray || [64, 34, 25, 12, 22, 11, 90],
   );
   const [isSorting, setIsSorting] = useState(false);
   const [currentStep, setCurrentStep] = useState<string>("");
@@ -17,7 +19,7 @@ export default function InsertionSortVisualizer({
   const [currentKey, setCurrentKey] = useState<number | null>(null);
   const [currentPosition, setCurrentPosition] = useState<number | null>(null);
   const [sortedElements, setSortedElements] = useState<Set<number>>(
-    new Set([0])
+    new Set([0]),
   );
   const [isShifting, setIsShifting] = useState(false);
   const [shiftingElement, setShiftingElement] = useState<number | null>(null);
@@ -47,7 +49,7 @@ export default function InsertionSortVisualizer({
       const key = arr[i];
       setCurrentKey(i);
       setCurrentStep(
-        `Pass ${i}: Inserting element ${key} from position ${i} into sorted portion`
+        `Pass ${i}: Inserting element ${key} from position ${i} into sorted portion`,
       );
       await sleep(speed);
 
@@ -58,7 +60,7 @@ export default function InsertionSortVisualizer({
         totalComparisons++;
         setComparisons(totalComparisons);
         setCurrentStep(
-          `Pass ${i}: Comparing ${key} with ${arr[j]} at position ${j}`
+          `Pass ${i}: Comparing ${key} with ${arr[j]} at position ${j}`,
         );
         await sleep(speed);
 
@@ -66,7 +68,7 @@ export default function InsertionSortVisualizer({
           setIsShifting(true);
           setShiftingElement(j);
           setCurrentStep(
-            `Pass ${i}: Shifting ${arr[j]} right (${arr[j]} > ${key})`
+            `Pass ${i}: Shifting ${arr[j]} right (${arr[j]} > ${key})`,
           );
 
           arr[j + 1] = arr[j];
@@ -82,7 +84,7 @@ export default function InsertionSortVisualizer({
           setCurrentPosition(j >= 0 ? j : null);
         } else {
           setCurrentStep(
-            `Pass ${i}: Found correct position (${arr[j]} ≤ ${key})`
+            `Pass ${i}: Found correct position (${arr[j]} ≤ ${key})`,
           );
           await sleep(speed / 2);
           break;
@@ -105,7 +107,7 @@ export default function InsertionSortVisualizer({
     setCurrentKey(null);
     setCurrentPosition(null);
     setCurrentStep(
-      `Insertion Sort completed! Array sorted in ${currentPass} passes with ${totalComparisons} comparisons and ${totalShifts} shifts.`
+      `Insertion Sort completed! Array sorted in ${currentPass} passes with ${totalComparisons} comparisons and ${totalShifts} shifts.`,
     );
     await sleep(1500);
     setCurrentStep("");
@@ -139,48 +141,6 @@ export default function InsertionSortVisualizer({
   };
 
   const getBarColor = (index: number, value: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -305,7 +265,7 @@ export default function InsertionSortVisualizer({
               >
                 <div
                   className={`rounded-lg flex items-end justify-center text-background font-bold shadow-lg transform transition-all duration-300 border-2 ${getBarBorder(
-                    index
+                    index,
                   )} hover:scale-105`}
                   style={{
                     width: Math.max(array.length <= 10 ? 50 : 40, 35),
@@ -314,10 +274,10 @@ export default function InsertionSortVisualizer({
                     boxShadow: isKey
                       ? "0 8px 25px rgba(139, 92, 246, 0.4)"
                       : isPosition
-                      ? "0 8px 25px rgba(239, 68, 68, 0.4)"
-                      : isSorted
-                      ? "0 4px 15px rgba(16, 185, 129, 0.4)"
-                      : "0 4px 15px rgba(0,0,0,0.1)",
+                        ? "0 8px 25px rgba(239, 68, 68, 0.4)"
+                        : isSorted
+                          ? "0 4px 15px rgba(16, 185, 129, 0.4)"
+                          : "0 4px 15px rgba(0,0,0,0.1)",
                   }}
                 >
                   <div className="pb-2 text-center">
@@ -368,8 +328,8 @@ export default function InsertionSortVisualizer({
                   i < currentPass
                     ? "bg-background-500 text-background"
                     : i === currentPass - 1
-                    ? "bg-background-500 text-background animate-pulse"
-                    : "bg-background-200 text-background-500"
+                      ? "bg-background-500 text-background animate-pulse"
+                      : "bg-background-200 text-background-500"
                 }`}
               >
                 {i + 1}
@@ -412,25 +372,8 @@ export default function InsertionSortVisualizer({
         </button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-background-800 mb-2">
-          How Insertion Sort Works:
-        </h3>
-        <p className="text-background-600 text-sm mb-2">
-          Insertion Sort builds a sorted array one element at a time by taking
-          each element from the unsorted portion and inserting it into its
-          correct position within the already sorted portion. Its like sorting
-          playing cards in your hand.
-        </p>
-        <div className="text-background-600 text-sm">
-          <strong>Steps:</strong> 1) Start with second element as key • 2)
-          Compare key with sorted elements • 3) Shift larger elements right • 4)
-          Insert key at correct position
-        </div>
-        <div className="text-background-600 text-sm mt-2">
-          <strong>Time Complexity:</strong> Best case O(n), Average case O(n²),
-          Worst case O(n²) • <strong>Space Complexity:</strong> O(1)
-        </div>
+      <div>
+        <InsertionSortDesc />
       </div>
     </div>
   );

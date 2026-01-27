@@ -1,3 +1,5 @@
+import QuickSortDesc from "@/components/descriptions/sorting/QuickSortDesc";
+import { accentColors, primaryColors, secondaryColors } from "@/lib/data";
 import { useState } from "react";
 
 export default function QuickSortVisualizer({
@@ -6,14 +8,14 @@ export default function QuickSortVisualizer({
   array?: number[];
 }) {
   const [array, setArray] = useState<number[]>(
-    initialArray || [64, 34, 25, 12, 22, 11, 90]
+    initialArray || [64, 34, 25, 12, 22, 11, 90],
   );
   const [isSorting, setIsSorting] = useState(false);
   const [pointerI, setPointerI] = useState<number | null>(null);
   const [pointerJ, setPointerJ] = useState<number | null>(null);
   const [pivotIndex, setPivotIndex] = useState<number | null>(null);
   const [currentRange, setCurrentRange] = useState<[number, number] | null>(
-    null
+    null,
   );
   const [currentStep, setCurrentStep] = useState<string>("");
   const [speed, setSpeed] = useState(600);
@@ -61,7 +63,7 @@ export default function QuickSortVisualizer({
   const partition = async (
     arr: number[],
     low: number,
-    high: number
+    high: number,
   ): Promise<number> => {
     const pivot = arr[high];
     setPivotIndex(high);
@@ -82,7 +84,7 @@ export default function QuickSortVisualizer({
 
         if (i !== j) {
           setCurrentStep(
-            `${arr[j]} ≤ ${pivot}, swapping positions ${i} and ${j}`
+            `${arr[j]} ≤ ${pivot}, swapping positions ${i} and ${j}`,
           );
           await sleep(speed);
 
@@ -141,48 +143,6 @@ export default function QuickSortVisualizer({
   };
 
   const getBarColor = (index: number, value: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      // "--primary-200",
-      // "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      // "--primary-900",
-      // "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      // "--secondary-200",
-      // "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      // "--secondary-900",
-      // "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      // "--accent-200",
-      // "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      // "--accent-900",
-      // "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -290,8 +250,8 @@ export default function QuickSortVisualizer({
                   isPivot
                     ? "ring-4 ring-background-400 scale-110 border-background-300 animate-pulse"
                     : isPointer
-                    ? "ring-4 ring-background-400 scale-110 border-background-300"
-                    : "border-background/30"
+                      ? "ring-4 ring-background-400 scale-110 border-background-300"
+                      : "border-background/30"
                 } hover:scale-105`}
                 style={{
                   width: `${Math.max(array.length <= 7 ? 52 : 40, 35)}px`,
@@ -359,21 +319,8 @@ export default function QuickSortVisualizer({
         </button>
       </div>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-4xl">
-        <h3 className="font-bold text-background-800 mb-2">
-          How QuickSort Works:
-        </h3>
-        <p className="text-background-600 text-sm mb-2">
-          QuickSort is a divide-and-conquer algorithm that selects a
-          &rsquo;pivot&rsquo; element and partitions the array around it.
-          Elements smaller than the pivot go to the left, larger elements go to
-          the right.
-        </p>
-        <p className="text-background-600 text-sm">
-          <strong>Time Complexity:</strong> Average O(n log n), Worst case O(n²)
-          •<strong> Space Complexity:</strong> O(log n) •
-          <strong> In-place:</strong> Yes •<strong> Stable:</strong> No
-        </p>
+      <div>
+        <QuickSortDesc />
       </div>
     </div>
   );

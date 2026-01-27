@@ -1,9 +1,6 @@
+import LinkedListDesc from "@/components/descriptions/linear/LinkedListDesc";
+import { ListNode } from "@/types";
 import { useState } from "react";
-
-interface ListNode {
-  value: number;
-  id: string;
-}
 
 export default function LinkedListVisualizer() {
   const [linkedList, setLinkedList] = useState<ListNode[]>([
@@ -94,7 +91,7 @@ export default function LinkedListVisualizer() {
     if (isNaN(value) || isNaN(index) || isAnimating) return;
     if (index < 0 || index > linkedList.length) {
       setCurrentOperation(
-        `Invalid index! Must be between 0 and ${linkedList.length}`
+        `Invalid index! Must be between 0 and ${linkedList.length}`,
       );
       setTimeout(() => setCurrentOperation(""), 2000);
       return;
@@ -127,7 +124,7 @@ export default function LinkedListVisualizer() {
     await sleep(speed);
 
     setLastOperation(
-      `Inserted ${value} at index ${index}. Length: ${newList.length}`
+      `Inserted ${value} at index ${index}. Length: ${newList.length}`,
     );
     setCurrentOperation("");
     setHighlightedIndex(null);
@@ -156,7 +153,7 @@ export default function LinkedListVisualizer() {
     const newList = linkedList.slice(1);
     setLinkedList(newList);
     setLastOperation(
-      `Deleted head node ${headValue}. Length: ${newList.length}`
+      `Deleted head node ${headValue}. Length: ${newList.length}`,
     );
     setCurrentOperation("");
     setHighlightedIndex(null);
@@ -169,7 +166,7 @@ export default function LinkedListVisualizer() {
     if (isNaN(index) || isAnimating) return;
     if (index < 0 || index >= linkedList.length) {
       setCurrentOperation(
-        `Invalid index! Must be between 0 and ${linkedList.length - 1}`
+        `Invalid index! Must be between 0 and ${linkedList.length - 1}`,
       );
       setTimeout(() => setCurrentOperation(""), 2000);
       return;
@@ -188,7 +185,7 @@ export default function LinkedListVisualizer() {
     }
 
     setCurrentOperation(
-      `Deleting node at index ${index} with value ${valueToDelete}...`
+      `Deleting node at index ${index} with value ${valueToDelete}...`,
     );
     setHighlightedIndex(index);
     setTraversalIndex(null);
@@ -200,7 +197,7 @@ export default function LinkedListVisualizer() {
     setLinkedList(newList);
 
     setLastOperation(
-      `Deleted node ${valueToDelete} at index ${index}. Length: ${newList.length}`
+      `Deleted node ${valueToDelete} at index ${index}. Length: ${newList.length}`,
     );
     setCurrentOperation("");
     setHighlightedIndex(null);
@@ -222,7 +219,7 @@ export default function LinkedListVisualizer() {
     for (let i = 0; i < linkedList.length; i++) {
       setTraversalIndex(i);
       setCurrentOperation(
-        `Checking node ${i}: ${linkedList[i].value} == ${value}?`
+        `Checking node ${i}: ${linkedList[i].value} == ${value}?`,
       );
       await sleep(speed);
 
@@ -243,7 +240,7 @@ export default function LinkedListVisualizer() {
     await sleep(speed);
 
     setLastOperation(
-      found ? `Found ${value} at index ${foundIndex}` : `${value} not found`
+      found ? `Found ${value} at index ${foundIndex}` : `${value} not found`,
     );
     setCurrentOperation("");
     setHighlightedIndex(null);
@@ -390,8 +387,8 @@ export default function LinkedListVisualizer() {
                         highlightedIndex === index
                           ? "scale-110 border-background-400 shadow-lg animate-pulse"
                           : traversalIndex === index
-                          ? "scale-105 border-background-400 shadow-md"
-                          : "border-background-300"
+                            ? "scale-105 border-background-400 shadow-md"
+                            : "border-background-300"
                       }`}
                       style={{
                         backgroundColor: getNodeColor(index, node.value),
@@ -598,72 +595,8 @@ export default function LinkedListVisualizer() {
         Clear All
       </button>
 
-      <div className="bg-background rounded-lg p-4 shadow-md max-w-5xl">
-        <h3 className="font-bold text-background-800 mb-3">
-          Linked List Operations:
-        </h3>
-        <div className="grid md:grid-cols-2 gap-4 text-sm">
-          <div>
-            <h4 className="font-semibold text-background-700 mb-2">
-              Basic Operations:
-            </h4>
-            <ul className="space-y-1 text-background-600">
-              <li>
-                <strong>Insert at Head:</strong> Add new node at beginning -
-                O(1)
-              </li>
-              <li>
-                <strong>Insert at Tail:</strong> Add new node at end - O(n)
-              </li>
-              <li>
-                <strong>Insert at Index:</strong> Add node at specific position
-                - O(n)
-              </li>
-              <li>
-                <strong>Delete:</strong> Remove node from list - O(n) for search
-                + O(1) for removal
-              </li>
-              <li>
-                <strong>Search:</strong> Find node with specific value - O(n)
-              </li>
-              <li>
-                <strong>Traverse:</strong> Visit all nodes in sequence - O(n)
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold text-background-700 mb-2">
-              Characteristics:
-            </h4>
-            <ul className="space-y-1 text-background-600">
-              <li>
-                <strong>Dynamic Size:</strong> Can grow/shrink during runtime
-              </li>
-              <li>
-                <strong>Memory Efficient:</strong> Allocates memory as needed
-              </li>
-              <li>
-                <strong>Non-contiguous:</strong> Nodes can be anywhere in memory
-              </li>
-              <li>
-                <strong>Sequential Access:</strong> Must traverse from head to
-                reach elements
-              </li>
-              <li>
-                <strong>Extra Memory:</strong> Requires storage for pointers
-              </li>
-              <li>
-                <strong>Use Cases:</strong> Implementation of stacks, queues,
-                graphs
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="mt-4 p-3 bg-background-50 rounded-lg text-sm">
-          <strong>vs Arrays:</strong> Linked lists excel at insertions/deletions
-          but have slower random access. Arrays have faster access but expensive
-          insertions/deletions in the middle.
-        </div>
+      <div>
+        <LinkedListDesc />
       </div>
     </div>
   );

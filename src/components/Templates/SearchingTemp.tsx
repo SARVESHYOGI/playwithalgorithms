@@ -2,7 +2,12 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { searchAlgorithms } from "@/lib/data";
+import {
+  accentColors,
+  primaryColors,
+  searchAlgorithms,
+  secondaryColors,
+} from "@/lib/data";
 
 function SearchingAnimation() {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
@@ -14,7 +19,7 @@ function SearchingAnimation() {
   const generateRandomArray = () => {
     const arr = Array.from(
       { length: 12 },
-      () => Math.floor(Math.random() * 80) + 10
+      () => Math.floor(Math.random() * 80) + 10,
     );
     return arr.sort((a, b) => a - b);
   };
@@ -71,48 +76,6 @@ function SearchingAnimation() {
   };
 
   const getBarColor = (value: number, index: number) => {
-    // const theme = document.documentElement.getAttribute("data-theme");
-
-    const primaryColors = [
-      // "--primary-50",
-      // "--primary-100",
-      "--primary-200",
-      "--primary-300",
-      "--primary-400",
-      "--primary-500",
-      "--primary-600",
-      "--primary-700",
-      "--primary-800",
-      "--primary-900",
-      "--primary-950",
-    ];
-    const secondaryColors = [
-      // "--secondary-50",
-      // "--secondary-100",
-      "--secondary-200",
-      "--secondary-300",
-      "--secondary-400",
-      "--secondary-500",
-      "--secondary-600",
-      "--secondary-700",
-      "--secondary-800",
-      "--secondary-900",
-      "--secondary-950",
-    ];
-    const accentColors = [
-      // "--accent-50",
-      // "--accent-100",
-      "--accent-200",
-      "--accent-300",
-      "--accent-400",
-      "--accent-500",
-      "--accent-600",
-      "--accent-700",
-      "--accent-800",
-      "--accent-900",
-      "--accent-950",
-    ];
-
     let colorSet = primaryColors;
 
     if (index % 3 === 1) colorSet = secondaryColors;
@@ -134,7 +97,6 @@ function SearchingAnimation() {
         height: `${getBarHeight(value)}px`,
         backgroundColor: "#00FF00",
         borderRadius: "50%",
-        // transform: "scale(1.3)",
         transition: "all 0.5s ease",
         boxShadow: "0 6px 12px rgba(0, 128, 0, 0.4)",
       };
@@ -201,10 +163,10 @@ function SearchingAnimation() {
             {isAnimating
               ? "Searching in progress..."
               : foundIndex !== null && foundIndex !== -1
-              ? `Target found at index ${foundIndex}!`
-              : foundIndex === -1
-              ? "Target not found."
-              : "Ready to search again"}
+                ? `Target found at index ${foundIndex}!`
+                : foundIndex === -1
+                  ? "Target not found."
+                  : "Ready to search again"}
           </span>
         </div>
       </div>

@@ -62,3 +62,27 @@ export const searchAlgorithms = [
     description: "Efficiently finds the target by repeatedly dividing a sorted list in half." 
   },
 ];
+
+export const primaryColors = [
+      "--primary-400",
+      "--primary-500",
+      "--primary-600",
+      "--primary-700",
+      "--primary-800",
+];
+
+export const secondaryColors = [
+      "--secondary-400",
+      "--secondary-500",
+      "--secondary-600",
+      "--secondary-700",
+      "--secondary-800",
+];
+
+export const accentColors = [
+      "--accent-400",
+      "--accent-500",
+      "--accent-600",
+      "--accent-700",
+      "--accent-800",
+];
